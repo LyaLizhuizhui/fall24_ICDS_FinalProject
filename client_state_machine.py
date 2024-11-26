@@ -115,8 +115,9 @@ class ClientSM:
                     # ----------your code here------#
                     print(peer_msg)
                     # pass
-                    self.state = S_CHATTING                    
-
+                    self.state = S_CHATTING
+                    self.peer = peer_msg["from"]
+                    self.out_msg += str({"action": peer_msg["action"], "from": peer_msg["from"]})
                     # ----------end of your code----#
 
 # ==============================================================================
@@ -140,7 +141,14 @@ class ClientSM:
 
                 if peer_msg["action"] == "disconnect":
                     self.state = S_LOGGEDIN
-                
+                elif peer_msg["action"] == "exchange":
+                    self.state = S_CHATTING
+                    self.out_msg += str({"action": "exchange", "from": peer_msg["from"], "message": peer_msg["message"]})
+                elif peer_msg["action"] == "connect":
+                    self.state = S_CHATTING
+                    self.peer = peer_msg["from"]
+                    self.out_msg += str({"action": peer_msg["action"], "from": peer_msg["from"]})
+
                 # ----------end of your code----#
 
             # Display the menu again

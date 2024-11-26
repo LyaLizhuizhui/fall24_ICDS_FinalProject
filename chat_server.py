@@ -26,8 +26,8 @@ class Server:
         # initialize past chat indices
         self.indices = {}
         # sonnet
-        #local: self.sonnet = indexer.PIndex("AllSonnets.txt")
-        self.sonnet = indexer.PIndex("E:/NYUSH/24Fall/ICDS/Code/1114_UP3/AllSonnets.txt")
+        self.sonnet = indexer.PIndex("AllSonnets.txt")
+        #local: self.sonnet = indexer.PIndex("E:/NYUSH/24Fall/ICDS/Code/1114_UP3/AllSonnets.txt")
 
     def new_client(self, sock):
         # add to all sockets and to new clients
@@ -135,7 +135,7 @@ class Server:
 
                     # IMPLEMENTATION
                     # ---- start your code ---- #
-                    print(msg["from"])
+                    #print(msg["from"])
                     mysend(
                         to_sock, json.dumps(
                             {"action": "exchange", "from": msg["from"][1:-1], "message": msg['message']}))
