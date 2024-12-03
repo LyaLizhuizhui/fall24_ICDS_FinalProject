@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
+
 import random
 import pickle
-
 
 class Roman2num:
     def __init__(self, fname):
@@ -8,7 +9,7 @@ class Roman2num:
         self.roman2int = {}
         self.fname = fname
         self.outfname = fname + '.pk'
-
+        
     def build_table(self):
         self.f = open(self.fname, 'r')
         lines = self.f.readlines()
@@ -20,21 +21,25 @@ class Roman2num:
             self.int2roman[rank] = roman_numeral
             self.roman2int[roman_numeral] = rank
         self.f.close()
-
+        
     def write_table(self):
         self.outf = open(self.outfname, 'wb')
         pickle.dump(self.int2roman, self.outf)
         pickle.dump(self.roman2int, self.outf)
         self.outf.close()
-
-
+        
 if __name__ == "__main__":
     r = Roman2num('roman.txt')
     r.build_table()
-
+    
     for i in range(10):
         x = random.randint(0, 20) + 1
+#        x = i+1
         s = r.int2roman[x]
         print(x, s)
-
+        
     r.write_table()
+    
+
+                
+            
