@@ -7,6 +7,8 @@ import select
 from tkinter import *
 from tkinter import font
 from tkinter import ttk
+#implementation
+from tkinter import messagebox
 from chat_utils import *
 import json
 
@@ -92,12 +94,17 @@ class GUI:
                 self.textCons.see(END)
                 # while True:
                 #     self.proc()
+            #######################implementation: name not valid#######################
+            else:
+                self.login.destroy()
+                self.login
+            #######################end implementation#######################
         # the thread to receive messages
             process = threading.Thread(target=self.proc)
             process.daemon = True
             process.start()
 
-  
+    
     # The main layout of the chat
     def layout(self,name):
         
@@ -174,71 +181,74 @@ class GUI:
                              relwidth = 0.22)
         
         ##################### implementation: time button ###################
-        self.buttonQ = Button(self.labelBottom, 
+        self.buttonTime = Button(self.labelBottom, 
                                   text='Time',
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
                                   #command = lambda : self.sendButton("time")
+                                  command = self.time
                                   )
         
-        self.buttonQ.place(relx = 0.01,
+        self.buttonTime.place(relx = 0.01,
                             rely = 0.038,
                             relheight = 0.03, 
                             relwidth = 0.13)
         ##################### time button end ###################
 
         ##################### implementation: contacts button ###################
-        self.buttonQ = Button(self.labelBottom, 
+        self.buttonContacts = Button(self.labelBottom, 
                                   text='Contacts',
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  command=self.Window.destroy)
+                                  #command = lambda : self.sendButton("who")
+                                  command = self.contacts
+                                  )
         
-        self.buttonQ.place(relx = 0.16,
+        self.buttonContacts.place(relx = 0.16,
                             rely = 0.038,
                             relheight = 0.03, 
                             relwidth = 0.13)
         ##################### contacts button end ###################
 
         ##################### implementation: connect button ###################
-        self.buttonQ = Button(self.labelBottom, 
+        self.buttonConnect = Button(self.labelBottom, 
                                   text='Connect',
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
                                   command=self.Window.destroy)
         
-        self.buttonQ.place(relx = 0.31,
+        self.buttonConnect.place(relx = 0.31,
                             rely = 0.038,
                             relheight = 0.03, 
                             relwidth = 0.13)
         ##################### connect button end ###################
 
         ##################### implementation: history button ###################
-        self.buttonQ = Button(self.labelBottom, 
+        self.buttonHistory = Button(self.labelBottom, 
                                   text='History',
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
                                   command=self.Window.destroy)
         
-        self.buttonQ.place(relx = 0.46,
+        self.buttonHistory.place(relx = 0.46,
                             rely = 0.038,
                             relheight = 0.03, 
                             relwidth = 0.13)
         ##################### history button end ###################
 
         ##################### implementation: sonnet button ###################
-        self.buttonQ = Button(self.labelBottom, 
+        self.buttonSonnet = Button(self.labelBottom, 
                                   text='Sonnet',
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
                                   command=self.Window.destroy)
         
-        self.buttonQ.place(relx = 0.61,
+        self.buttonSonnet.place(relx = 0.61,
                             rely = 0.038,
                             relheight = 0.03, 
                             relwidth = 0.13)
@@ -271,7 +281,36 @@ class GUI:
         scrollbar.config(command = self.textCons.yview)
           
         self.textCons.config(state = DISABLED)
-  
+    
+
+    
+    #################implementation: display window #################
+    def time(self):
+        msg = json.dumps({"action":"time"})
+        self.send(msg)
+        time_in = json.loads(self.recv())["results"]
+        messagebox.showinfo('Time', \
+                            "Time is: " + time_in)
+        
+    def contacts(self):
+        msg = json.dumps({"action":"list"})
+        self.send(msg)
+        logged_in = json.loads(self.recv())["results"]
+        messagebox.showinfo('Contacts', \
+                            "Here are all the users in the system:\n" + logged_in)
+    
+    #######################end implementation#######################
+    
+    #################implementation: entry window #################
+    
+    
+    #######################end implementation#######################
+
+    #################implementation: select window #################
+    
+    
+    #######################end implementation#######################
+
     # function to basically start the thread for sending messages
     def sendButton(self, msg):
         self.textCons.config(state = DISABLED)
@@ -284,7 +323,7 @@ class GUI:
         while True:
             read, write, error = select.select([self.socket], [], [], 0)
             peer_msg = []
-            print(self.msg)
+            #print(self.my_msg)
             if self.socket in read:
                 peer_msg = self.recv()
             if len(self.my_msg) > 0 or len(peer_msg) > 0:
