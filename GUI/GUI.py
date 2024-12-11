@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+####################### time method: line 288####################
+####################### proc: line 347 ##########################
 # import all the required  modules
 import threading
 import select
@@ -34,9 +35,12 @@ class GUI:
         self.login.resizable(width = False, 
                              height = False)
         self.login.configure(width = 400,
-                             height = 300)
+                             height = 300,
+                             bg = "#F1F8F5")
         # create a Label
-        self.pls = Label(self.login, 
+        self.pls = Label(self.login,
+                       bg = "#F1F8F5", 
+                       fg = "#252C29",
                        text = "Please login to continue",
                        justify = CENTER, 
                        font = "Bahnschrift 14 bold")
@@ -46,6 +50,8 @@ class GUI:
                        rely = 0.07)
         # create a Label
         self.labelName = Label(self.login,
+                               bg = "#F1F8F5", 
+                               fg = "#252C29",
                                text = "Name: ",
                                font = "Bahnschrift 12")
           
@@ -56,6 +62,8 @@ class GUI:
         # create a entry box for 
         # tyoing the message
         self.entryName = Entry(self.login, 
+                             bg = "#F1F8F5",
+                             fg = "#252C29",
                              font = "Bahnschrift 14")
           
         self.entryName.place(relwidth = 0.4, 
@@ -71,6 +79,7 @@ class GUI:
         self.go = Button(self.login,
                          text = "CONTINUE", 
                          font = "Bahnschrift 14 bold", 
+                         bg = "#A8B9D5",
                          command = lambda: self.goAhead(self.entryName.get()))
           
         self.go.place(relx = 0.4,
@@ -94,11 +103,6 @@ class GUI:
                 self.textCons.see(END)
                 # while True:
                 #     self.proc()
-            #######################implementation: name not valid#######################
-            else:
-                self.login.destroy()
-                self.login
-            #######################end implementation#######################
         # the thread to receive messages
             process = threading.Thread(target=self.proc)
             process.daemon = True
@@ -116,9 +120,9 @@ class GUI:
                               height = False)
         self.Window.configure(width = 470,
                               height = 550,
-                              bg = "#17202A")
+                              bg = "#F1F8F5")
         self.labelHead = Label(self.Window,
-                               bg = "#B9DDCF", 
+                               bg = "#F1F8F5", 
                                fg = "#252C29",
                                text = self.name ,
                                font = "Bahnschrift 14 bold",
@@ -186,8 +190,8 @@ class GUI:
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  #command = lambda : self.sendButton("time")
-                                  command = self.time
+                                  command = lambda : self.sendButton("time")
+                                  #command = self.time
                                   )
         
         self.buttonTime.place(relx = 0.01,
@@ -202,8 +206,8 @@ class GUI:
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  #command = lambda : self.sendButton("who")
-                                  command = self.contacts
+                                  command = lambda : self.sendButton("who")
+                                  #command = self.contacts
                                   )
         
         self.buttonContacts.place(relx = 0.16,
@@ -218,7 +222,7 @@ class GUI:
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  command=self.Window.destroy)
+                                  command = self.connect)
         
         self.buttonConnect.place(relx = 0.31,
                             rely = 0.038,
@@ -232,7 +236,7 @@ class GUI:
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  command=self.Window.destroy)
+                                  command = self.history)
         
         self.buttonHistory.place(relx = 0.46,
                             rely = 0.038,
@@ -246,7 +250,7 @@ class GUI:
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  command=self.Window.destroy)
+                                  command= self.sonnet)
         
         self.buttonSonnet.place(relx = 0.61,
                             rely = 0.038,
@@ -282,32 +286,163 @@ class GUI:
           
         self.textCons.config(state = DISABLED)
     
+    #################implementation: connect window #################
+    def connect(self):
+        self.input_window = Tk()
+        self.input_window.title("Connect")
+        self.input_window.resizable(width = False, 
+                            height = False)
+        self.input_window.configure(width = 400,
+                            height = 300,
+                            bg = "#F1F8F5")
 
-    
-    #################implementation: display window #################
-    def time(self):
-        msg = json.dumps({"action":"time"})
-        self.send(msg)
-        time_in = json.loads(self.recv())["results"]
-        messagebox.showinfo('Time', \
-                            "Time is: " + time_in)
-        
-    def contacts(self):
-        msg = json.dumps({"action":"list"})
-        self.send(msg)
-        logged_in = json.loads(self.recv())["results"]
-        messagebox.showinfo('Contacts', \
-                            "Here are all the users in the system:\n" + logged_in)
-    
-    #######################end implementation#######################
-    
-    #################implementation: entry window #################
-    
-    
+        self.top_frame = Frame(self.input_window)
+        self.bottom_frame = Frame(self.input_window)
+
+        self.prompt_label = Label(self.top_frame,
+                                text='Connect to:',
+                                bg = "#F1F8F5", 
+                                fg = "#252C29",
+                                font = "Bahnschrift 12")
+        self.entry = Entry(self.top_frame, \
+                        width=10)
+
+        self.prompt_label.pack(side='left')
+        self.entry.pack(side='left')
+
+        self.input_button = Button(self.bottom_frame,
+                                text='Connect',
+                                font = "Bahnschrift 12 bold", 
+                                width = 10,
+                                bg = "#A8B9D5",
+                                command = lambda : self.sendButton("c "+self.entry.get()))
+                                #command = self.connect_with)
+                                #command = lambda : [self.sendButton("c "+self.entry.get()),
+                                #    self.input_window.destroy])
+        self.quit_button = Button(self.bottom_frame,
+                                text='Quit',
+                                font = "Bahnschrift 12 bold", 
+                                width = 10,
+                                bg = "#A8B9D5",
+                                command = self.input_window.destroy)
+
+        self.input_button.pack(side='left')
+        self.quit_button.pack(side='left')
+
+        self.top_frame.pack()
+        self.bottom_frame.pack()
+
+        #kinter.inputloop()
+
+    def connect_with(self):
+        lambda : self.sendButton("c "+self.entry.get())
+        self.input_window.destroy
     #######################end implementation#######################
 
-    #################implementation: select window #################
-    
+    #################implementation: history window #################
+    def history(self):
+        self.input_window = Tk()
+        self.input_window.title("Chat History")
+        self.input_window.resizable(width = False, 
+                            height = False)
+        self.input_window.configure(width = 400,
+                            height = 300,
+                            bg = "#F1F8F5")
+
+        self.top_frame = Frame(self.input_window)
+        self.bottom_frame = Frame(self.input_window)
+
+        self.prompt_label = Label(self.top_frame,
+                                text='Who said this:',
+                                bg = "#F1F8F5", 
+                                fg = "#252C29",
+                                font = "Bahnschrift 12")
+        self.entry = Entry(self.top_frame, \
+                        width=10)
+
+        self.prompt_label.pack(side='left')
+        self.entry.pack(side='left')
+
+        self.input_button = Button(self.bottom_frame,
+                                text='Search',
+                                font = "Bahnschrift 12 bold", 
+                                width = 10,
+                                bg = "#A8B9D5",
+                                command = lambda : self.sendButton("? "+self.entry.get()))
+                                #command = self.search_history)
+                                #command = lambda : [self.sendButton("? "+self.entry.get()),
+                                #    self.input_window.destroy])
+        self.quit_button = Button(self.bottom_frame,
+                                text='Quit',
+                                font = "Bahnschrift 12 bold", 
+                                width = 10,
+                                bg = "#A8B9D5",
+                                command = self.input_window.destroy)
+
+        self.input_button.pack(side='left')
+        self.quit_button.pack(side='left')
+
+        self.top_frame.pack()
+        self.bottom_frame.pack()
+
+        #kinter.inputloop()
+
+    def search_history(self):
+        lambda : self.sendButton("? "+self.entry.get())
+        self.input_window.destroy
+    #######################end implementation#######################
+
+    #################implementation: sonnet window #################
+    def sonnet(self):
+        self.input_window = Tk()
+        self.input_window.title("Sonnet")
+        self.input_window.resizable(width = False, 
+                            height = False)
+        self.input_window.configure(width = 400,
+                            height = 300,
+                            bg = "#F1F8F5")
+
+        self.top_frame = Frame(self.input_window)
+        self.bottom_frame = Frame(self.input_window)
+
+        self.prompt_label = Label(self.top_frame,
+                                text='Sonnet #:',
+                                bg = "#F1F8F5", 
+                                fg = "#252C29",
+                                font = "Bahnschrift 12")
+        self.entry = Entry(self.top_frame, \
+                        width=10)
+
+        self.prompt_label.pack(side='left')
+        self.entry.pack(side='left')
+
+        self.input_button = Button(self.bottom_frame,
+                                text='Get',
+                                font = "Bahnschrift 12 bold", 
+                                width = 10,
+                                bg = "#A8B9D5",
+                                command = lambda : self.sendButton("p"+self.entry.get()))
+                                #command = self.get_sonnet)
+                                #command = lambda : [self.sendButton("p"+self.entry.get()),
+                                #    self.input_window.destroy])
+        self.quit_button = Button(self.bottom_frame,
+                                text='Quit',
+                                font = "Bahnschrift 12 bold", 
+                                width = 10,
+                                bg = "#A8B9D5",
+                                command = self.input_window.destroy)
+
+        self.input_button.pack(side='left')
+        self.quit_button.pack(side='left')
+
+        self.top_frame.pack()
+        self.bottom_frame.pack()
+
+        #kinter.inputloop()
+
+    def get_sonnet(self):
+        lambda : self.sendButton("p"+self.entry.get())
+        self.input_window.destroy
     
     #######################end implementation#######################
 
@@ -323,9 +458,13 @@ class GUI:
         while True:
             read, write, error = select.select([self.socket], [], [], 0)
             peer_msg = []
-            #print(self.my_msg)
+            #json_msg = json.loads(peer_msg)
+            #if json_msg["action"] == "time":
+            #     continue
             if self.socket in read:
                 peer_msg = self.recv()
+            if self.my_msg == 'time' and self.my_msg == 'who':
+                continue
             if len(self.my_msg) > 0 or len(peer_msg) > 0:
                 # print(self.system_msg)
                 self.system_msg += self.sm.proc(self.my_msg, peer_msg)
@@ -334,6 +473,14 @@ class GUI:
                 self.textCons.insert(END, self.system_msg +"\n\n")      
                 self.textCons.config(state = DISABLED)
                 self.textCons.see(END)
+            # if (len(self.my_msg) > 0 or len(peer_msg) > 0) and self.my_msg != 'time' and self.my_msg != 'who':
+            #     # print(self.system_msg)
+            #     self.system_msg += self.sm.proc(self.my_msg, peer_msg)
+            #     self.my_msg = ""
+            #     self.textCons.config(state = NORMAL)
+            #     self.textCons.insert(END, self.system_msg +"\n\n")      
+            #     self.textCons.config(state = DISABLED)
+            #     self.textCons.see(END)
 
     def run(self):
         self.login()
