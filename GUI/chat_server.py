@@ -28,8 +28,13 @@ class Server:
         # self.sonnet_f = open('AllSonnets.txt.idx', 'rb')
         # self.sonnet = pkl.load(self.sonnet_f)
         # self.sonnet_f.close()
-        #local: self.sonnet = indexer_good.PIndex("AllSonnets.txt")
-        self.sonnet = indexer_good.PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
+        # self.sonnet = indexer_good.PIndex("AllSonnets.txt") # local
+        self.sonnet = indexer_good.PIndex("C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
+        # self.sonnet = indexer_good.PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
+        self.game_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.game_server.bind(GAME_SERVER)
+        self.game_server.listen(2)
+
     def new_client(self, sock):
         #add to all sockets and to new clients
         print('new client...')
@@ -171,6 +176,12 @@ class Server:
                     g = the_guys.pop()
                     to_sock = self.logged_name2sock[g]
                     mysend(to_sock, json.dumps({"action":"disconnect"}))
+            elif msg["action"] == "game":
+                    from_name = self.logged_sock2name[from_sock]
+                    the_guys = self.group.list_me(from_name)[1:]
+                    for g in the_guys:
+                        to_sock = self.logged_name2sock[g]
+                        mysend(to_sock, json.dumps({"action":"game"}))
 #==============================================================================
 #                 the "from" guy really, really has had enough
 #==============================================================================

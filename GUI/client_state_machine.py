@@ -1,5 +1,8 @@
 from chat_utils import *
+from tkinter import *
 import json
+import pygame
+import numpy as np
 
 class ClientSM:
     def __init__(self, s):
@@ -8,6 +11,7 @@ class ClientSM:
         self.me = ''
         self.out_msg = ''
         self.s = s
+        self.tictactoe = Tictactoe()
 
     def set_state(self, state):
         self.state = state
@@ -61,12 +65,12 @@ class ClientSM:
                 elif my_msg == 'time':
                     mysend(self.s, json.dumps({"action":"time"}))
                     time_in = json.loads(myrecv(self.s))["results"]
-                    self.out_msg += "Time is: " + time_in
+                    self.out_msg += "\n\n\n\n\n\n\n\n\nTime is: " + time_in
 
                 elif my_msg == 'who':
                     mysend(self.s, json.dumps({"action":"list"}))
                     logged_in = json.loads(myrecv(self.s))["results"]
-                    self.out_msg += 'Here are all the users in the system:\n'
+                    self.out_msg += '\n\n\n\n\n\n\n\n\n\nHere are all the users in the system:\n'
                     self.out_msg += logged_in
 
                 elif my_msg[0] == 'c':
@@ -97,7 +101,10 @@ class ClientSM:
                         self.out_msg += poem + '\n\n'
                     else:
                         self.out_msg += 'Sonnet ' + poem_idx + ' not found\n\n'
-
+                
+                elif my_msg == "game":
+                    self.state = S_GAMING
+                
                 else:
                     self.out_msg += menu
 
@@ -122,6 +129,8 @@ class ClientSM:
                     self.disconnect()
                     self.state = S_LOGGEDIN
                     self.peer = ''
+                elif my_msg == 'game':
+                    self.state = S_GAMING
             if len(peer_msg) > 0:    # peer's stuff, coming in
                 peer_msg = json.loads(peer_msg)
                 if peer_msg["action"] == "connect":
@@ -131,10 +140,12 @@ class ClientSM:
                 else:
                     self.out_msg += peer_msg["from"] + peer_msg["message"]
 
-
             # Display the menu again
             if self.state == S_LOGGEDIN:
                 self.out_msg += menu
+
+        elif self.state == S_GAMING:
+            self.game_client()
 #==============================================================================
 # invalid state
 #==============================================================================
@@ -143,3 +154,6 @@ class ClientSM:
             print_state(self.state)
 
         return self.out_msg
+
+        # def game_client():
+        #    print("oh hi this is just for testing")
