@@ -34,7 +34,6 @@ class Server:
         self.game_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.game_server.bind(GAME_SERVER)
         self.game_server.listen(2)
-        self.count = 0
 
     def new_client(self, sock):
         #add to all sockets and to new clients
@@ -178,7 +177,6 @@ class Server:
                     to_sock = self.logged_name2sock[g]
                     mysend(to_sock, json.dumps({"action":"disconnect"}))
             elif msg["action"] == "game":
-                    self.count += 1
                     from_name = self.logged_sock2name[from_sock]
                     the_guys = self.group.list_me(from_name)[1:]
                     for g in the_guys:
