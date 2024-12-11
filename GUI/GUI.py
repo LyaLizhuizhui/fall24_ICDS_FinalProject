@@ -160,7 +160,7 @@ class GUI:
         self.entryMsg = Entry(self.labelBottom,
                               bg = "#F1F8F5",
                               fg = "#252C29",
-                              font = "Bahnschrift 13")
+                              font = "Bahnschrift 12")
           
         # place the given widget
         # into the gui window
@@ -185,6 +185,22 @@ class GUI:
                              relwidth = 0.22)
         
         ##################### implementation: time button ###################
+        self.buttonGame = Button(self.labelBottom, 
+                                  text='Game',
+                                  font = "Bahnschrift 10", 
+                                  width = 20,
+                                  bg = "#A8B9D5",
+                                  command = lambda : self.sendButton("game")
+                                  #command = self.game
+                                  )
+        
+        self.buttonGame.place(relx = 0.01,
+                            rely = 0.038,
+                            relheight = 0.03, 
+                            relwidth = 0.11)
+        ##################### time button end ###################
+
+        ##################### implementation: time button ###################
         self.buttonTime = Button(self.labelBottom, 
                                   text='Time',
                                   font = "Bahnschrift 10", 
@@ -194,10 +210,10 @@ class GUI:
                                   #command = self.time
                                   )
         
-        self.buttonTime.place(relx = 0.01,
+        self.buttonTime.place(relx = 0.135,
                             rely = 0.038,
                             relheight = 0.03, 
-                            relwidth = 0.13)
+                            relwidth = 0.11)
         ##################### time button end ###################
 
         ##################### implementation: contacts button ###################
@@ -210,10 +226,10 @@ class GUI:
                                   #command = self.contacts
                                   )
         
-        self.buttonContacts.place(relx = 0.16,
+        self.buttonContacts.place(relx = 0.26,
                             rely = 0.038,
                             relheight = 0.03, 
-                            relwidth = 0.13)
+                            relwidth = 0.11)
         ##################### contacts button end ###################
 
         ##################### implementation: connect button ###################
@@ -224,10 +240,10 @@ class GUI:
                                   bg = "#A8B9D5",
                                   command = self.connect)
         
-        self.buttonConnect.place(relx = 0.31,
+        self.buttonConnect.place(relx = 0.385,
                             rely = 0.038,
                             relheight = 0.03, 
-                            relwidth = 0.13)
+                            relwidth = 0.11)
         ##################### connect button end ###################
 
         ##################### implementation: history button ###################
@@ -238,10 +254,10 @@ class GUI:
                                   bg = "#A8B9D5",
                                   command = self.history)
         
-        self.buttonHistory.place(relx = 0.46,
+        self.buttonHistory.place(relx = 0.51,
                             rely = 0.038,
                             relheight = 0.03, 
-                            relwidth = 0.13)
+                            relwidth = 0.11)
         ##################### history button end ###################
 
         ##################### implementation: sonnet button ###################
@@ -252,10 +268,10 @@ class GUI:
                                   bg = "#A8B9D5",
                                   command= self.sonnet)
         
-        self.buttonSonnet.place(relx = 0.61,
+        self.buttonSonnet.place(relx = 0.635,
                             rely = 0.038,
                             relheight = 0.03, 
-                            relwidth = 0.13)
+                            relwidth = 0.11)
         ##################### sonnet button end ###################
 
         ##################### implementation: quit button ###################
