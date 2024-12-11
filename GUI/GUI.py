@@ -36,11 +36,11 @@ class GUI:
                              height = False)
         self.login.configure(width = 400,
                              height = 300,
-                             bg = "#F1F8F5")
+                             bg = "#FFFFFF")
         # create a Label
         self.pls = Label(self.login,
-                       bg = "#F1F8F5", 
-                       fg = "#252C29",
+                       bg = "#FFFFFF", 
+                       fg = "#000000",
                        text = "Please login to continue",
                        justify = CENTER, 
                        font = "Bahnschrift 14 bold")
@@ -50,8 +50,8 @@ class GUI:
                        rely = 0.07)
         # create a Label
         self.labelName = Label(self.login,
-                               bg = "#F1F8F5", 
-                               fg = "#252C29",
+                               bg = "#FFFFFF", 
+                               fg = "#000000",
                                text = "Name: ",
                                font = "Bahnschrift 12")
           
@@ -62,8 +62,8 @@ class GUI:
         # create a entry box for 
         # tyoing the message
         self.entryName = Entry(self.login, 
-                             bg = "#F1F8F5",
-                             fg = "#252C29",
+                             bg = "#b3cde0",
+                             fg = "#011f4b",
                              font = "Bahnschrift 14")
           
         self.entryName.place(relwidth = 0.4, 
@@ -79,7 +79,8 @@ class GUI:
         self.go = Button(self.login,
                          text = "CONTINUE", 
                          font = "Bahnschrift 14 bold", 
-                         bg = "#A8B9D5",
+                         bg = "#196ba0",
+                         fg = '#FFFFFF',
                          command = lambda: self.goAhead(self.entryName.get()))
           
         self.go.place(relx = 0.4,
@@ -120,10 +121,10 @@ class GUI:
                               height = False)
         self.Window.configure(width = 470,
                               height = 550,
-                              bg = "#F1F8F5")
+                              bg = "#FFFFFF")
         self.labelHead = Label(self.Window,
-                               bg = "#F1F8F5", 
-                               fg = "#252C29",
+                               bg = "#03396c", 
+                               fg = "#FFFFFF",
                                text = self.name ,
                                font = "Bahnschrift 14 bold",
                                pady = 5)
@@ -131,7 +132,7 @@ class GUI:
         self.labelHead.place(relwidth = 1)
         self.line = Label(self.Window,
                           width = 450,
-                          bg = "#A8B9D5")
+                          bg = "#196ba0")
           
         self.line.place(relwidth = 1,
                         rely = 0.07,
@@ -140,8 +141,8 @@ class GUI:
         self.textCons = Text(self.Window,
                              width = 20, 
                              height = 2,
-                             bg = "#F1F8F5",
-                             fg = "#252C29",
+                             bg = "#FFFFFF",
+                             fg = "#000000",
                              font = "Bahnschrift 14", 
                              padx = 5,
                              pady = 5)
@@ -151,15 +152,15 @@ class GUI:
                             rely = 0.08)
           
         self.labelBottom = Label(self.Window,
-                                 bg = "#A8B9D5",
+                                 bg = "#03396c",
                                  height = 75)
           
         self.labelBottom.place(relwidth = 1,
                                rely = 0.825)
           
         self.entryMsg = Entry(self.labelBottom,
-                              bg = "#F1F8F5",
-                              fg = "#252C29",
+                              bg = "#b3cde0",
+                              fg = "#011f4b",
                               font = "Bahnschrift 12")
           
         # place the given widget
@@ -176,7 +177,8 @@ class GUI:
                                 text = "SEND",
                                 font = "Bahnschrift 12 bold", 
                                 width = 20,
-                                bg = "#A8B9D5",
+                                bg = "#19A092",
+                                fg = "#FFFFFF",
                                 command = lambda : self.sendButton(self.entryMsg.get()))
           
         self.buttonMsg.place(relx = 0.77,
@@ -189,7 +191,8 @@ class GUI:
                                   text='Game',
                                   font = "Bahnschrift 10", 
                                   width = 20,
-                                  bg = "#A8B9D5",
+                                  bg = "#e8bb23",
+                                  fg = "#FFFFFF",
                                   command = lambda : self.sendButton("game")
                                   #command = self.game
                                   )
@@ -205,7 +208,8 @@ class GUI:
                                   text='Time',
                                   font = "Bahnschrift 10", 
                                   width = 20,
-                                  bg = "#A8B9D5",
+                                  bg = "#196ba0",
+                                  fg = "#FFFFFF",
                                   command = lambda : self.sendButton("time")
                                   #command = self.time
                                   )
@@ -218,10 +222,11 @@ class GUI:
 
         ##################### implementation: contacts button ###################
         self.buttonContacts = Button(self.labelBottom, 
-                                  text='Contacts',
+                                  text='Contact',
                                   font = "Bahnschrift 10", 
                                   width = 20,
-                                  bg = "#A8B9D5",
+                                  bg = "#196ba0",
+                                  fg = "#FFFFFF",
                                   command = lambda : self.sendButton("who")
                                   #command = self.contacts
                                   )
@@ -237,7 +242,8 @@ class GUI:
                                   text='Connect',
                                   font = "Bahnschrift 10", 
                                   width = 20,
-                                  bg = "#A8B9D5",
+                                  bg = "#196ba0",
+                                  fg = "#FFFFFF",
                                   command = self.connect)
         
         self.buttonConnect.place(relx = 0.385,
@@ -251,7 +257,8 @@ class GUI:
                                   text='History',
                                   font = "Bahnschrift 10", 
                                   width = 20,
-                                  bg = "#A8B9D5",
+                                  bg = "#196ba0",
+                                  fg = "#FFFFFF",
                                   command = self.history)
         
         self.buttonHistory.place(relx = 0.51,
@@ -265,7 +272,8 @@ class GUI:
                                   text='Sonnet',
                                   font = "Bahnschrift 10", 
                                   width = 20,
-                                  bg = "#A8B9D5",
+                                  bg = "#196ba0",
+                                  fg = "#FFFFFF",
                                   command= self.sonnet)
         
         self.buttonSonnet.place(relx = 0.635,
@@ -279,7 +287,8 @@ class GUI:
                                   text='QUIT',
                                   font = "Bahnschrift 12 bold", 
                                   width = 20,
-                                  bg = "#A8B9D5",
+                                  bg = "#eb6841",
+                                  fg = "#FFFFFF",
                                   command=self.Window.destroy)
         
         self.buttonQ.place(relx = 0.77,
@@ -310,18 +319,20 @@ class GUI:
                             height = False)
         self.input_window.configure(width = 400,
                             height = 300,
-                            bg = "#F1F8F5")
+                            bg = "#FFFFFF")
 
         self.top_frame = Frame(self.input_window)
         self.bottom_frame = Frame(self.input_window)
 
         self.prompt_label = Label(self.top_frame,
                                 text='Connect to:',
-                                bg = "#F1F8F5", 
-                                fg = "#252C29",
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
                                 font = "Bahnschrift 12")
-        self.entry = Entry(self.top_frame, \
-                        width=10)
+        self.entry = Entry(self.top_frame,
+                           bg = '#b3cde0',
+                           fg = "#011f4b",
+                           width=10)
 
         self.prompt_label.pack(side='left')
         self.entry.pack(side='left')
@@ -330,7 +341,8 @@ class GUI:
                                 text='Connect',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
-                                bg = "#A8B9D5",
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
                                 command = lambda : self.sendButton("c "+self.entry.get()))
                                 #command = self.connect_with)
                                 #command = lambda : [self.sendButton("c "+self.entry.get()),
@@ -339,7 +351,8 @@ class GUI:
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
-                                bg = "#A8B9D5",
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
                                 command = self.input_window.destroy)
 
         self.input_button.pack(side='left')
@@ -363,18 +376,20 @@ class GUI:
                             height = False)
         self.input_window.configure(width = 400,
                             height = 300,
-                            bg = "#F1F8F5")
+                            bg = "#FFFFFF")
 
         self.top_frame = Frame(self.input_window)
         self.bottom_frame = Frame(self.input_window)
 
         self.prompt_label = Label(self.top_frame,
                                 text='Who said this:',
-                                bg = "#F1F8F5", 
-                                fg = "#252C29",
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
                                 font = "Bahnschrift 12")
-        self.entry = Entry(self.top_frame, \
-                        width=10)
+        self.entry = Entry(self.top_frame,
+                           bg = '#b3cde0',
+                           fg = "#011f4b",
+                           width=10)
 
         self.prompt_label.pack(side='left')
         self.entry.pack(side='left')
@@ -383,7 +398,8 @@ class GUI:
                                 text='Search',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
-                                bg = "#A8B9D5",
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
                                 command = lambda : self.sendButton("? "+self.entry.get()))
                                 #command = self.search_history)
                                 #command = lambda : [self.sendButton("? "+self.entry.get()),
@@ -392,7 +408,8 @@ class GUI:
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
-                                bg = "#A8B9D5",
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
                                 command = self.input_window.destroy)
 
         self.input_button.pack(side='left')
@@ -416,18 +433,20 @@ class GUI:
                             height = False)
         self.input_window.configure(width = 400,
                             height = 300,
-                            bg = "#F1F8F5")
+                            bg = "#FFFFFF")
 
         self.top_frame = Frame(self.input_window)
         self.bottom_frame = Frame(self.input_window)
 
         self.prompt_label = Label(self.top_frame,
                                 text='Sonnet #:',
-                                bg = "#F1F8F5", 
-                                fg = "#252C29",
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
                                 font = "Bahnschrift 12")
-        self.entry = Entry(self.top_frame, \
-                        width=10)
+        self.entry = Entry(self.top_frame,
+                           bg = '#b3cde0',
+                           fg = "#011f4b",
+                           width=10)
 
         self.prompt_label.pack(side='left')
         self.entry.pack(side='left')
@@ -436,7 +455,8 @@ class GUI:
                                 text='Get',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
-                                bg = "#A8B9D5",
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
                                 command = lambda : self.sendButton("p"+self.entry.get()))
                                 #command = self.get_sonnet)
                                 #command = lambda : [self.sendButton("p"+self.entry.get()),
@@ -445,7 +465,8 @@ class GUI:
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
-                                bg = "#A8B9D5",
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
                                 command = self.input_window.destroy)
 
         self.input_button.pack(side='left')

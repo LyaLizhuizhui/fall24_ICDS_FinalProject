@@ -1,4 +1,4 @@
-#E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/sample_GUI/chat_cmdl_client.py
+#E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/chat_cmdl_client.py
 from chat_client_class import *
 
 def main():
