@@ -97,7 +97,10 @@ class ClientSM:
                         self.out_msg += poem + '\n\n'
                     else:
                         self.out_msg += 'Sonnet ' + poem_idx + ' not found\n\n'
-
+                
+                elif my_msg == "game":
+                    self.state = S_GAMING
+                
                 else:
                     self.out_msg += menu
 
@@ -122,6 +125,8 @@ class ClientSM:
                     self.disconnect()
                     self.state = S_LOGGEDIN
                     self.peer = ''
+                elif my_msg == 'game':
+                    self.state = S_GAMING
             if len(peer_msg) > 0:    # peer's stuff, coming in
                 peer_msg = json.loads(peer_msg)
                 if peer_msg["action"] == "connect":
@@ -131,10 +136,12 @@ class ClientSM:
                 else:
                     self.out_msg += peer_msg["from"] + peer_msg["message"]
 
-
             # Display the menu again
             if self.state == S_LOGGEDIN:
                 self.out_msg += menu
+
+        elif self.state == S_GAMING:
+            self.game_client()
 #==============================================================================
 # invalid state
 #==============================================================================
@@ -143,3 +150,6 @@ class ClientSM:
             print_state(self.state)
 
         return self.out_msg
+
+        def game_client():
+            print("oh hi this is just for testing")

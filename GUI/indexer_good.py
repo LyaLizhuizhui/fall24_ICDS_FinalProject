@@ -50,7 +50,8 @@ class Index:
 class PIndex(Index):
     def __init__(self, name):
         super().__init__(name)
-        roman_int_f = open('E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/roman.txt.pk', 'rb')
+        roman_int_f = open('C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/GUI/roman.txt.pk', 'rb')
+        # roman_int_f = open('E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/roman.txt.pk', 'rb')
         #local: roman_int_f = open('roman.txt.pk', 'rb')
         self.int2roman = pickle.load(roman_int_f)
         roman_int_f.close()
@@ -83,7 +84,8 @@ class PIndex(Index):
         return poem
     
 if __name__ == "__main__":
-    sonnets = PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
+    sonnets = PIndex('C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/GUI/AllSonnets.txt')
+    #sonnets = PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
     #local:sonnets = PIndex("AllSonnets.txt")
     p3 = sonnets.get_poem(3)
     print(p3)

@@ -186,8 +186,8 @@ class GUI:
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  #command = lambda : self.sendButton("time")
-                                  command = self.time
+                                  command = lambda : self.sendButton("time")
+                                  #command = self.time
                                   )
         
         self.buttonTime.place(relx = 0.01,
@@ -202,8 +202,8 @@ class GUI:
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  #command = lambda : self.sendButton("who")
-                                  command = self.contacts
+                                  command = lambda : self.sendButton("who")
+                                  #command = self.contacts
                                   )
         
         self.buttonContacts.place(relx = 0.16,
