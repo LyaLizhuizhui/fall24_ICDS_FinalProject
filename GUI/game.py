@@ -17,14 +17,15 @@ player_o = 1
 pygame.init()
 
 class TicTacToe:
-    def __init__(self):
+    def __init__(self, role = "X"):
         self.screen = pygame.display.set_mode((size_of_board, size_of_board))
         pygame.display.set_caption("Tic Tac Toe")
 
         # init game
         self.board = np.zeros((grid_size, grid_size), dtype=int)
-        self.player_turn = player_x 
+        self.player_turn = player_x if role == "X" else player_o
         self.game_over = False
+        self.role = role
         self.x_wins = False
         self.o_wins = False
         self.tie = False
@@ -71,7 +72,7 @@ class TicTacToe:
         self.x_wins = False
         self.o_wins = False
         self.tie = False
-        self.player_turn = player_x 
+        self.player_turn = player_x if self.role == "X" else player_o 
 
     def draw_gameover(self):
         font = pygame.font.SysFont('Arial', 30)

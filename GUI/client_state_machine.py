@@ -1,6 +1,6 @@
 from chat_utils import *
+from game import TicTacToe
 import json
-#import pygame
 
 class ClientSM:
     def __init__(self, s):
@@ -9,7 +9,6 @@ class ClientSM:
         self.me = ''
         self.out_msg = ''
         self.s = s
-        #self.tictactoe = Tictactoe()
 
     def set_state(self, state):
         self.state = state
@@ -100,8 +99,10 @@ class ClientSM:
                     else:
                         self.out_msg += '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSonnet ' + poem_idx + ' not found\n\n'
                 
-                #elif my_msg == "game":
-                #    self.state = S_GAMING
+                elif my_msg == "game":
+                    mysend(self.s, json.dumps({"action": "game"}))
+                    self.out_msg += "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEntering game mode :)"
+                    self.state = S_GAMING
                 
                 else:
                     self.out_msg += menu
@@ -127,14 +128,25 @@ class ClientSM:
                     self.disconnect()
                     self.state = S_LOGGEDIN
                     self.peer = ''
-                #elif my_msg == 'game':
-                #    self.state = S_GAMING
+
             if len(peer_msg) > 0:    # peer's stuff, coming in
                 peer_msg = json.loads(peer_msg)
+
                 if peer_msg["action"] == "connect":
                     self.out_msg += "(" + peer_msg["from"] + " joined)\n"
+
                 elif peer_msg["action"] == "disconnect":
                     self.state = S_LOGGEDIN
+
+                elif peer_msg["action"] == "game":
+                    role = peer_msg["role"]
+                    opponent = peer_msg["opponent"]
+                    self.role = role
+                    self.out_msg += f"Starting game as {self.role} against {opponent}.\n"
+                    self.state = S_GAMING
+                
+                elif peer_msg["action"] == "error":
+                    self.out_msg += peer_msg["msg"] + "\n"
                 else:
                     self.out_msg += peer_msg["from"] + peer_msg["message"] + '\n'
 
@@ -142,8 +154,15 @@ class ClientSM:
             if self.state == S_LOGGEDIN:
                 self.out_msg += menu
 
-        #elif self.state == S_GAMING:
-        #    self.game_client()
+        elif self.state == S_GAMING:
+            game = TicTacToe(role = self.role)
+            # assign roles
+            # if self.role == "X":
+            #     game.player_turn = player_x 
+            # else:
+            #     game.player_turn = player_O
+            game.run()
+            self.state = S_LOGGEDIN
 #==============================================================================
 # invalid state
 #==============================================================================
@@ -152,6 +171,3 @@ class ClientSM:
             print_state(self.state)
 
         return self.out_msg
-
-        # def game_client():
-        #    print("oh hi this is just for testing")

@@ -190,8 +190,8 @@ class GUI:
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#A8B9D5",
-                                  command = lambda : self.sendButton("game")
-                                  #command = self.game
+                                  command = lambda : self.sendButton("game"),
+                                  # command = self.game
                                   )
         
         self.buttonGame.place(relx = 0.01,
