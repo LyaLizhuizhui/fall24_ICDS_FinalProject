@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-####################### time method: line 288####################
-####################### proc: line 347 ##########################
 # import all the required  modules
 import threading
 import select
@@ -193,8 +191,8 @@ class GUI:
                                   width = 20,
                                   bg = "#e8bb23",
                                   fg = "#FFFFFF",
-                                  #command = lambda : self.sendButton("game")
-                                  command = self.game
+                                  command = lambda : self.sendButton("game")
+                                  #command = self.game
                                   )
         
         self.buttonGame.place(relx = 0.01,
@@ -510,13 +508,8 @@ class GUI:
         while True:
             read, write, error = select.select([self.socket], [], [], 0)
             peer_msg = []
-            #json_msg = json.loads(peer_msg)
-            #if json_msg["action"] == "time":
-            #     continue
             if self.socket in read:
                 peer_msg = self.recv()
-            #if self.my_msg == 'time' or self.my_msg == 'who':
-            #    continue
             if len(self.my_msg) > 0 or len(peer_msg) > 0:
                 # print(self.system_msg)
                 self.system_msg += self.sm.proc(self.my_msg, peer_msg)
@@ -525,14 +518,6 @@ class GUI:
                 self.textCons.insert(END, self.system_msg +"\n\n")      
                 self.textCons.config(state = DISABLED)
                 self.textCons.see(END)
-            # if (len(self.my_msg) > 0 or len(peer_msg) > 0) and self.my_msg != 'time' and self.my_msg != 'who':
-            #     # print(self.system_msg)
-            #     self.system_msg += self.sm.proc(self.my_msg, peer_msg)
-            #     self.my_msg = ""
-            #     self.textCons.config(state = NORMAL)
-            #     self.textCons.insert(END, self.system_msg +"\n\n")      
-            #     self.textCons.config(state = DISABLED)
-            #     self.textCons.see(END)
 
     def run(self):
         self.login()
