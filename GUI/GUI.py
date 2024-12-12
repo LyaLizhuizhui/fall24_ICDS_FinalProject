@@ -210,8 +210,8 @@ class GUI:
                                   width = 20,
                                   bg = "#196ba0",
                                   fg = "#FFFFFF",
-                                  #command = lambda : self.sendButton("time")
-                                  command = self.time
+                                  command = lambda : self.sendButton("time")
+                                  #command = self.time
                                   )
         
         self.buttonTime.place(relx = 0.135,
@@ -310,7 +310,23 @@ class GUI:
         scrollbar.config(command = self.textCons.yview)
           
         self.textCons.config(state = DISABLED)
+    #################implementation: display window #################
+    def time(self):
+        msg = json.dumps({"action":"time"})
+        self.send(msg)
+        time_in = json.loads(self.recv())["results"]
+        messagebox.showinfo('Time', \
+                            "Time is: " + time_in)
+        
+    def contacts(self):
+        msg = json.dumps({"action":"list"})
+        self.send(msg)
+        logged_in = json.loads(self.recv())["results"]
+        messagebox.showinfo('Contacts', \
+                            "Here are all the users in the system:\n" + logged_in)
     
+    #######################end implementation#######################
+
     #################implementation: connect window #################
     def connect(self):
         self.connect_window = Tk()
@@ -343,8 +359,8 @@ class GUI:
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = lambda : self.sendButton("c "+self.entry.get()))
-                                #command = self.connect_with)
+                                #command = lambda : self.sendButton("c "+self.entry.get()))
+                                command = self.connect_with)
                                 #command = lambda : [self.sendButton("c "+self.entry.get()),
                                 #    self.connect_window.destroy])
         self.quit_button = Button(self.bottom_frame,
@@ -364,25 +380,8 @@ class GUI:
         #kinter.connectloop()
 
     def connect_with(self):
-        lambda : self.sendButton("c "+self.entry.get())
+        self.sendButton("c "+self.entry.get())
         self.connect_window.withdraw()
-    #######################end implementation#######################
-
-    #################implementation: display window #################
-    def time(self):
-        msg = json.dumps({"action":"time"})
-        self.send(msg)
-        time_in = json.loads(self.recv())["results"]
-        messagebox.showinfo('Time', \
-                            "Time is: " + time_in)
-        
-    def contacts(self):
-        msg = json.dumps({"action":"list"})
-        self.send(msg)
-        logged_in = json.loads(self.recv())["results"]
-        messagebox.showinfo('Contacts', \
-                            "Here are all the users in the system:\n" + logged_in)
-    
     #######################end implementation#######################
 
     #################implementation: history window #################
@@ -417,8 +416,8 @@ class GUI:
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = lambda : self.sendButton("? "+self.entry.get()))
-                                #command = self.search_history)
+                                #command = lambda : self.sendButton("? "+self.entry.get()))
+                                command = self.search_history)
                                 #command = lambda : [self.sendButton("? "+self.entry.get()),
                                 #    self.history_window.destroy])
         self.quit_button = Button(self.bottom_frame,
@@ -438,7 +437,7 @@ class GUI:
         #kinter.historyloop()
 
     def search_history(self):
-        lambda : self.sendButton("? "+self.entry.get())
+        self.sendButton("? "+self.entry.get())
         self.history_window.withdraw()
     #######################end implementation#######################
 
@@ -517,8 +516,8 @@ class GUI:
             #     continue
             if self.socket in read:
                 peer_msg = self.recv()
-            if self.my_msg == 'time' or self.my_msg == 'who':
-                continue
+            #if self.my_msg == 'time' or self.my_msg == 'who':
+            #    continue
             if len(self.my_msg) > 0 or len(peer_msg) > 0:
                 # print(self.system_msg)
                 self.system_msg += self.sm.proc(self.my_msg, peer_msg)
