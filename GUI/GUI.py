@@ -10,7 +10,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from chat_utils import *
 import json
-# import 2048 file
+import logic
 
 # GUI class for the chat
 class GUI:
@@ -505,18 +505,27 @@ class GUI:
         self.game_window.configure(width = 600,
                             height = 800,
                             bg = "#FFFFFF")
-        self.top_frame = Frame(self.game_window) # top: rules
+        self.top_frame = Frame(self.game_window) # top
         self.mid_frame = Frame(self.game_window) # mid: canvas
-        self.bottom_frame = Frame(self.game_window) # botoom: button
+        self.bottom_frame = Frame(self.game_window) # bottom
 
-        # Rules
-        self.rules_label = Label(self.top_frame,
-                                text='Slide numbered tiles to combine them and reach 2048!',
+        # Text
+        self.text_label = Label(self.top_frame,
+                                text='2048            ',
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
-                                font = "Bahnschrift 12")
+                                font = "Bahnschrift 24 bold")
+        self.text_label.pack(side='left')
 
-        self.rules_label.pack(side='left', padx=10, pady=10)
+        # Quit Button
+        self.quit_button = Button(self.top_frame,
+                                text='Quit',
+                                font = "Bahnschrift 12 bold", 
+                                width = 10,
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
+                                command = self.game_window.destroy)
+        self.quit_button.pack(side='right')
 
         # Canvas
         self.canvas = Canvas(self.mid_frame,
@@ -527,16 +536,67 @@ class GUI:
         self.canvas.pack()
         self.draw_grid()
 
-        # Button
-        self.quit_button = Button(self.bottom_frame,
-                                text='Quit',
-                                font = "Bahnschrift 12 bold", 
-                                width = 10,
-                                bg = "#196ba0",
-                                fg = "#FFFFFF",
-                                command = self.game_window.destroy)
-        self.quit_button.pack(side='left',padx=10, pady=10)
+        # Description / rule
+        self.rule_label = Label(self.bottom_frame,
+                                text='Combine matching tiles on a grid by sliding them \nto create larger numbers, aiming to reach 2048.',
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
+                                font = "Bahnschrift 12")
+        self.rule_label.pack(side='left')
 
+        # 上下左右buttons
+        # Up Button
+        self.up_button = Button(self.bottom_frame,
+                            text='↑',
+                            font = "Bahnschrift 12 bold", 
+                            width = 3,
+                            bg = "#196ba0",
+                            fg = "#FFFFFF",
+                            # command = self.game_window.destroy
+                        )
+
+        self.up_button.place(relx = 0.7, 
+                       rely = 0.2)
+
+        # Down Button
+        self.down_button = Button(self.bottom_frame,
+                            text='↓',
+                            font = "Bahnschrift 12 bold", 
+                            width = 3,
+                            bg = "#196ba0",
+                            fg = "#FFFFFF",
+                            # command = self.game_window.destroy
+                        )
+        self.up_button.place(relx = 0.7, 
+                       rely = 0.8)
+
+        # Left Button
+        self.left_button = Button(self.bottom_frame,
+                            text='←',
+                            font = "Bahnschrift 12 bold", 
+                            width = 3,
+                            bg = "#196ba0",
+                            fg = "#FFFFFF",
+                            # command = self.game_window.destroy
+                        )
+        self.up_button.place(relx = 0.6, 
+                       rely = 0.5)
+        # Right Button
+        self.right_button = Button(self.bottom_frame,
+                            text='→',
+                            font = "Bahnschrift 12 bold", 
+                            width = 3,
+                            bg = "#196ba0",
+                            fg = "#FFFFFF",
+                            # command = self.game_window.destroy
+                        )
+        self.up_button.place(relx = 0.8, 
+                       rely = 0.5)
+
+        self.up_button.pack(side = "top",padx=1,pady=2)
+        self.down_button.pack(side = "bottom",padx=1,pady=2)
+        self.left_button.pack(side = "left",padx=3,pady=2)
+        self.right_button.pack(side = "right",padx=3,pady=2)
 
         self.top_frame.pack()
         self.mid_frame.pack()
