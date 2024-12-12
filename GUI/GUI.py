@@ -12,6 +12,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from chat_utils import *
 import json
+# import 2048 file
 
 # GUI class for the chat
 class GUI:
@@ -186,22 +187,22 @@ class GUI:
                              relheight = 0.03, 
                              relwidth = 0.22)
         
-        ##################### implementation: time button ###################
+        ##################### implementation: game button ###################
         self.buttonGame = Button(self.labelBottom, 
                                   text='Game',
                                   font = "Bahnschrift 10", 
                                   width = 20,
                                   bg = "#e8bb23",
                                   fg = "#FFFFFF",
-                                  command = lambda : self.sendButton("game")
-                                  #command = self.game
+                                  # command = lambda : self.sendButton("game")
+                                  command = self.game
                                   )
         
         self.buttonGame.place(relx = 0.01,
                             rely = 0.038,
                             relheight = 0.03, 
                             relwidth = 0.11)
-        ##################### time button end ###################
+        ##################### game button end ###################
 
         ##################### implementation: time button ###################
         self.buttonTime = Button(self.labelBottom, 
@@ -210,8 +211,8 @@ class GUI:
                                   width = 20,
                                   bg = "#196ba0",
                                   fg = "#FFFFFF",
-                                  #command = lambda : self.sendButton("time")
-                                  command = self.time
+                                  command = lambda : self.sendButton("time")
+                                  #command = self.time
                                   )
         
         self.buttonTime.place(relx = 0.135,
@@ -310,7 +311,23 @@ class GUI:
         scrollbar.config(command = self.textCons.yview)
           
         self.textCons.config(state = DISABLED)
+    #################implementation: display window #################
+    def time(self):
+        msg = json.dumps({"action":"time"})
+        self.send(msg)
+        time_in = json.loads(self.recv())["results"]
+        messagebox.showinfo('Time', \
+                            "Time is: " + time_in)
+        
+    def contacts(self):
+        msg = json.dumps({"action":"list"})
+        self.send(msg)
+        logged_in = json.loads(self.recv())["results"]
+        messagebox.showinfo('Contacts', \
+                            "Here are all the users in the system:\n" + logged_in)
     
+    #######################end implementation#######################
+
     #################implementation: connect window #################
     def connect(self):
         self.connect_window = Tk()
@@ -343,8 +360,8 @@ class GUI:
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = lambda : self.sendButton("c "+self.entry.get()))
-                                #command = self.connect_with)
+                                #command = lambda : self.sendButton("c "+self.entry.get()))
+                                command = self.connect_with)
                                 #command = lambda : [self.sendButton("c "+self.entry.get()),
                                 #    self.connect_window.destroy])
         self.quit_button = Button(self.bottom_frame,
@@ -364,25 +381,8 @@ class GUI:
         #kinter.connectloop()
 
     def connect_with(self):
-        lambda : self.sendButton("c "+self.entry.get())
+        self.sendButton("c "+self.entry.get())
         self.connect_window.withdraw()
-    #######################end implementation#######################
-
-    #################implementation: display window #################
-    def time(self):
-        msg = json.dumps({"action":"time"})
-        self.send(msg)
-        time_in = json.loads(self.recv())["results"]
-        messagebox.showinfo('Time', \
-                            "Time is: " + time_in)
-        
-    def contacts(self):
-        msg = json.dumps({"action":"list"})
-        self.send(msg)
-        logged_in = json.loads(self.recv())["results"]
-        messagebox.showinfo('Contacts', \
-                            "Here are all the users in the system:\n" + logged_in)
-    
     #######################end implementation#######################
 
     #################implementation: history window #################
@@ -417,8 +417,8 @@ class GUI:
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = lambda : self.sendButton("? "+self.entry.get()))
-                                #command = self.search_history)
+                                #command = lambda : self.sendButton("? "+self.entry.get()))
+                                command = self.search_history)
                                 #command = lambda : [self.sendButton("? "+self.entry.get()),
                                 #    self.history_window.destroy])
         self.quit_button = Button(self.bottom_frame,
@@ -438,7 +438,7 @@ class GUI:
         #kinter.historyloop()
 
     def search_history(self):
-        lambda : self.sendButton("? "+self.entry.get())
+        self.sendButton("? "+self.entry.get())
         self.history_window.withdraw()
     #######################end implementation#######################
 
@@ -500,6 +500,62 @@ class GUI:
     
     #######################end implementation#######################
 
+    ##################### implementation: 2048 game window ###################
+    def game(self):   
+        self.game_window = Tk()
+        self.game_window.title("2048 GAME")
+        self.game_window.resizable(width = False, 
+                            height = False)
+        self.game_window.configure(width = 600,
+                            height = 800,
+                            bg = "#FFFFFF")
+        self.top_frame = Frame(self.game_window) # top: rules
+        self.mid_frame = Frame(self.game_window) # mid: canvas
+        self.bottom_frame = Frame(self.game_window) # botoom: button
+
+        # Rules
+        self.rules_label = Label(self.top_frame,
+                                text='Slide numbered tiles to combine them and reach 2048!',
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
+                                font = "Bahnschrift 12")
+
+        self.rules_label.pack(side='left', padx=10, pady=10)
+
+        # Canvas
+        self.canvas = Canvas(self.mid_frame,
+                            bg = '#cce6ff',
+                            width = 400,
+                            height = 400,
+                            )
+        self.canvas.pack()
+        self.draw_grid()
+
+        # Button
+        self.quit_button = Button(self.bottom_frame,
+                                text='Quit',
+                                font = "Bahnschrift 12 bold", 
+                                width = 10,
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
+                                command = self.game_window.destroy)
+        self.quit_button.pack(side='left',padx=10, pady=10)
+
+
+        self.top_frame.pack()
+        self.mid_frame.pack()
+        self.bottom_frame.pack()
+        ##################### 2048 game window end ###################
+
+    def draw_grid(self):
+        # Vertical lines
+        for i in range(5):
+            self.canvas.create_line(i * 100, 0, i * 100, 400, fill="#3399ff")
+        # Horizontal lines
+        for i in range(5):
+            self.canvas.create_line(0, i * 100, 400, i * 100, fill="#3399ff")
+        
+
     # function to basically start the thread for sending messages
     def sendButton(self, msg):
         self.textCons.config(state = DISABLED)
@@ -517,8 +573,8 @@ class GUI:
             #     continue
             if self.socket in read:
                 peer_msg = self.recv()
-            if self.my_msg == 'time' or self.my_msg == 'who':
-                continue
+            #if self.my_msg == 'time' or self.my_msg == 'who':
+            #    continue
             if len(self.my_msg) > 0 or len(peer_msg) > 0:
                 # print(self.system_msg)
                 self.system_msg += self.sm.proc(self.my_msg, peer_msg)
