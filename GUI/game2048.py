@@ -15,6 +15,13 @@ if __name__ == '__main__':
         print(i)
 
 while(True):
+
+    # taking the user input
+    # for next step
+    x = input("Press the command : ")
+    ###########################implementation: take input from gui################
+    #x = 
+    ##########################end implementation##################################
     # we have to move up
     if(x == 'W' or x == 'w'):
 
