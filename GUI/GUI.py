@@ -508,6 +508,8 @@ class GUI:
     def game(self):  
         self.mat = logic.start_game()
         self.flag = True
+        self.g_status = 'Please Start! :)'
+        self.total_score = 0
         self.game_window = Tk()
         self.game_window.title("2048 GAME")
         self.game_window.resizable(width = False, 
@@ -521,7 +523,7 @@ class GUI:
 
         # Text
         self.text_label = Label(self.top_frame,
-                                text='2048                 ',
+                                text=' 2048              ',
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 36 bold")
@@ -539,7 +541,7 @@ class GUI:
 
         # Canvas
         self.canvas = Canvas(self.mid_frame,
-                            bg = '#cce6ff',
+                            bg = '#ffffff',
                             width = 400,
                             height = 400,
                             )
@@ -547,13 +549,32 @@ class GUI:
 
         self.assign_mat()
 
-        # Description / rule
-        self.rule_label = Label(self.bottom_frame,
-                                text='Combine matching tiles on a grid by sliding them \nto create larger numbers, aiming to reach 2048.',
+        #initial total score and status
+        self.display_status_label = Label(self.bottom_frame,
+                                text=self.g_status,
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
-                                font = "Bahnschrift 12")
+                                font = "Bahnschrift 15"
+                                )
+        self.display_status_label.pack(side='left')
+        self.display_score_label = Label(self.bottom_frame,
+                                text='Your score is: '+ str(self.total_score),
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
+                                font = "Bahnschrift 15"
+                                )
+        #self.display_score_label.place(relx=0.5,rely=0.75)
+        self.display_score_label.pack(side='left')
+        #self.display_score_label.grid(row=0, column=0, sticky='w', padx=10)
+
+        # Description / rule
+        self.rule_label = Label(self.bottom_frame,
+                                text='Combine matching tiles on a grid\nby sliding them to create larger numbers,\naiming to reach 2048.',
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
+                                font = "Bahnschrift 11")
         self.rule_label.pack(side='left')
+        #self.rule_label.grid(row=1, column=0, sticky='w', padx=10)
 
         # Up Button
         self.up_button = Button(self.bottom_frame,
@@ -566,7 +587,7 @@ class GUI:
                         )
 
         self.up_button.place(relx = 0.7, 
-                       rely = 0.2)
+                       rely = 0)
 
         # Down Button
         self.down_button = Button(self.bottom_frame,
@@ -577,7 +598,7 @@ class GUI:
                             fg = "#FFFFFF",
                             command = lambda: self.down(self.flag)
                         )
-        self.up_button.place(relx = 0.7, 
+        self.down_button.place(relx = 0.7, 
                        rely = 0.8)
 
         # Left Button
@@ -589,7 +610,7 @@ class GUI:
                             fg = "#FFFFFF",
                             command= lambda: self.left(self.flag)
                         )
-        self.up_button.place(relx = 0.6, 
+        self.left_button.place(relx = 0.6, 
                        rely = 0.5)
         # Right Button
         self.right_button = Button(self.bottom_frame,
@@ -600,13 +621,13 @@ class GUI:
                             fg = "#FFFFFF",
                             command = lambda: self.right(self.flag)
                         )
-        self.up_button.place(relx = 0.8, 
+        self.right_button.place(relx = 0.9, 
                        rely = 0.5)
 
-        self.up_button.pack(side = "top",padx=1,pady=2)
-        self.down_button.pack(side = "bottom",padx=1,pady=2)
-        self.left_button.pack(side = "left",padx=3,pady=2)
-        self.right_button.pack(side = "right",padx=3,pady=2)
+        # self.up_button.pack(side = "top",padx=1,pady=2)
+        # self.down_button.pack(side = "bottom",padx=1,pady=2)
+        # self.left_button.pack(side = "left",padx=3,pady=2)
+        # self.right_button.pack(side = "right",padx=3,pady=2)
 
         self.top_frame.pack()
         self.mid_frame.pack()
@@ -623,6 +644,7 @@ class GUI:
         # if game not over then continue
         # and add a new two
         if self.flag:
+            self.calc_total(self.total_score)
             if(self.g_status == 'GAME NOT OVER'):
                 logic.add_new_2(self.mat)
 
@@ -639,6 +661,7 @@ class GUI:
         self.g_status = logic.get_current_state(self.mat)
         print(self.g_status)
         if self.flag:
+            self.calc_total(self.total_score)
             if(self.g_status == 'GAME NOT OVER'):
                 logic.add_new_2(self.mat)
             else:
@@ -652,6 +675,7 @@ class GUI:
         self.g_status = logic.get_current_state(self.mat)
         print(self.g_status)
         if self.flag:
+            self.calc_total(self.total_score)
             if(self.g_status == 'GAME NOT OVER'):
                 logic.add_new_2(self.mat)
             else:
@@ -665,6 +689,7 @@ class GUI:
         self.g_status = logic.get_current_state(self.mat)
         print(self.g_status)
         if self.flag:
+            self.calc_total(self.total_score)
             if(self.g_status == 'GAME NOT OVER'):
                 logic.add_new_2(self.mat)
             else:
@@ -690,16 +715,41 @@ class GUI:
             for col in range(4):
                 x1, y1 = col * cell_size, row * cell_size
                 x2, y2 = x1 + cell_size, y1 + cell_size
-
-                self.canvas.create_rectangle(x1, y1, x2, y2, fill="#d9d9d9", outline="#ffffff")
-
                 if self.mat[row][col] != 0:
+                    if self.mat[row][col] == 2:
+                        bg = '#99bdd5'
+                    elif self.mat[row][col] == 4:
+                        bg = '#7fadca'
+                    elif self.mat[row][col] == 8:
+                        bg = '#669cc0'
+                    elif self.mat[row][col] == 16:
+                        bg = '#4c8cb5'
+                    elif self.mat[row][col] == 32:
+                        bg = '#327bab'
+                    elif self.mat[row][col] == 64:
+                        bg = '#196ba0'
+                    elif self.mat[row][col] == 128:
+                        bg = '#005b96'
+                    elif self.mat[row][col] == 256:
+                        bg = '#005187'
+                    elif self.mat[row][col] == 512:
+                        bg = '#004878'
+                    elif self.mat[row][col] == 1024:
+                        bg = '#003f69'
+                    elif self.mat[row][col] == 2048:
+                        bg = '#00365a'
+                    elif self.mat[row][col] >= 4096:
+                        bg = '#002d4b'
+                    self.canvas.create_rectangle(
+                        x1, y1, x2, y2, 
+                        fill= bg, 
+                        outline="#ffffff")
                     self.canvas.create_text(
                         (x1 + x2) // 2, 
                         (y1 + y2) // 2, 
                         text=str(self.mat[row][col]), 
-                        font=("Bahnschrift", 20), 
-                        fill="black"
+                        font=("Bahnschrift 24 bold"), 
+                        fill="#FFFFFF"
                     )        
 
     def game_over(self):
@@ -711,19 +761,27 @@ class GUI:
         self.game_over_label.place(relx=0.5,rely=0.5)
         self.game_over_label.pack()
 
-        self.total_score = 0
+    def calc_total(self,total_score):
         for row in range(4):
             for col in range(4):
                 self.total_score += self.mat[row][col]
-
-        self.display_score_label = Label(self.mid_frame,
-                                text='Your score is:'+ self.total_score,
+        self.display_status_label.destroy()
+        self.display_score_label.destroy()
+        self.display_status_label = Label(self.bottom_frame,
+                                text=self.g_status,
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 15"
                                 )
-        self.display_score_label.place(relx=0.5,rely=0.75)
-        self.display_score_label.pack()
+        self.display_status_label.pack(side='left')
+        self.display_score_label = Label(self.mid_frame,
+                                text='Your score is: '+ str(self.total_score),
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
+                                font = "Bahnschrift 15"
+                                )
+        #self.display_score_label.place(relx=0.5,rely=0.75)
+        self.display_score_label.pack(side='left')
 
     # function to basically start the thread for sending messages
     def sendButton(self, msg):
