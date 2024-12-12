@@ -193,8 +193,8 @@ class GUI:
                                   width = 20,
                                   bg = "#e8bb23",
                                   fg = "#FFFFFF",
-                                  command = lambda : self.sendButton("game")
-                                  #command = self.game
+                                  #command = lambda : self.sendButton("game")
+                                  command = self.game
                                   )
         
         self.buttonGame.place(relx = 0.01,
@@ -490,14 +490,13 @@ class GUI:
 
         self.top_frame.pack()
         self.bottom_frame.pack()
-
         #kinter.sonnetloop()
 
     def get_sonnet(self):
         self.sendButton("p"+self.entry.get())
         self.sonnet_window.withdraw()
-    
     #######################end implementation#######################
+
 
     # function to basically start the thread for sending messages
     def sendButton(self, msg):
