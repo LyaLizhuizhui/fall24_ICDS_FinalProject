@@ -288,12 +288,13 @@ class GUI:
                                   width = 20,
                                   bg = "#eb6841",
                                   fg = "#FFFFFF",
-                                  command=self.Window.destroy)
+                                  command = self.quit_system)
         
         self.buttonQ.place(relx = 0.77,
                             rely = 0.038,
                             relheight = 0.03, 
                             relwidth = 0.22)
+        
         ##################### quit button end ###################
 
         self.textCons.config(cursor = "arrow")
@@ -309,6 +310,13 @@ class GUI:
         scrollbar.config(command = self.textCons.yview)
           
         self.textCons.config(state = DISABLED)
+    
+    ################implementation: quit #################
+    def quit_system(self):
+        self.sendButton("q")
+        self.Window.destroy()
+    #######################end implementation#######################
+
     #################implementation: display window #################
     def time(self):
         msg = json.dumps({"action":"time"})
@@ -497,7 +505,9 @@ class GUI:
     #######################end implementation#######################
 
     ##################### implementation: 2048 game window ###################
-    def game(self):   
+    def game(self):  
+        self.mat = logic.start_game()
+        self.flag = True
         self.game_window = Tk()
         self.game_window.title("2048 GAME")
         self.game_window.resizable(width = False, 
@@ -511,10 +521,10 @@ class GUI:
 
         # Text
         self.text_label = Label(self.top_frame,
-                                text='2048            ',
+                                text='2048                 ',
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
-                                font = "Bahnschrift 24 bold")
+                                font = "Bahnschrift 36 bold")
         self.text_label.pack(side='left')
 
         # Quit Button
@@ -534,7 +544,8 @@ class GUI:
                             height = 400,
                             )
         self.canvas.pack()
-        self.draw_grid()
+
+        self.assign_mat()
 
         # Description / rule
         self.rule_label = Label(self.bottom_frame,
@@ -544,7 +555,6 @@ class GUI:
                                 font = "Bahnschrift 12")
         self.rule_label.pack(side='left')
 
-        # 上下左右buttons
         # Up Button
         self.up_button = Button(self.bottom_frame,
                             text='↑',
@@ -552,7 +562,7 @@ class GUI:
                             width = 3,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            # command = self.game_window.destroy
+                            command = lambda: self.up(self.flag)
                         )
 
         self.up_button.place(relx = 0.7, 
@@ -565,7 +575,7 @@ class GUI:
                             width = 3,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            # command = self.game_window.destroy
+                            command = lambda: self.down(self.flag)
                         )
         self.up_button.place(relx = 0.7, 
                        rely = 0.8)
@@ -577,7 +587,7 @@ class GUI:
                             width = 3,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            # command = self.game_window.destroy
+                            command= lambda: self.left(self.flag)
                         )
         self.up_button.place(relx = 0.6, 
                        rely = 0.5)
@@ -588,7 +598,7 @@ class GUI:
                             width = 3,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            # command = self.game_window.destroy
+                            command = lambda: self.right(self.flag)
                         )
         self.up_button.place(relx = 0.8, 
                        rely = 0.5)
@@ -601,8 +611,68 @@ class GUI:
         self.top_frame.pack()
         self.mid_frame.pack()
         self.bottom_frame.pack()
-        ##################### 2048 game window end ###################
 
+    def up(self, flag):
+        # call the move_up function
+        self.mat, self.flag = logic.move_up(self.mat)
+        self.assign_mat()
+        # get the current state and print it
+        self.g_status = logic.get_current_state(self.mat)
+        print(self.g_status)
+
+        # if game not over then continue
+        # and add a new two
+        if self.flag:
+            if(self.g_status == 'GAME NOT OVER'):
+                logic.add_new_2(self.mat)
+
+        # else break the loop 
+            else:
+                self.game_over()
+        #else
+        else:
+            print("Invalid move, no tiles moved. Try again.")
+
+    def down(self, flag):
+        self.mat, self.flag = logic.move_down(self.mat)
+        self.assign_mat()
+        self.g_status = logic.get_current_state(self.mat)
+        print(self.g_status)
+        if self.flag:
+            if(self.g_status == 'GAME NOT OVER'):
+                logic.add_new_2(self.mat)
+            else:
+                self.game_over()
+        else:
+            print("Invalid move, no tiles moved. Try again.")
+
+    def left(self, flag):
+        self.mat, self.flag = logic.move_left(self.mat)
+        self.assign_mat()
+        self.g_status = logic.get_current_state(self.mat)
+        print(self.g_status)
+        if self.flag:
+            if(self.g_status == 'GAME NOT OVER'):
+                logic.add_new_2(self.mat)
+            else:
+                self.game_over()
+        else:
+            print("Invalid move, no tiles moved. Try again.")
+
+    def right(self, flag):
+        self.mat, self.flag = logic.move_right(self.mat)
+        self.assign_mat()
+        self.g_status = logic.get_current_state(self.mat)
+        print(self.g_status)
+        if self.flag:
+            if(self.g_status == 'GAME NOT OVER'):
+                logic.add_new_2(self.mat)
+            else:
+                self.game_over()
+        else:
+            print("Invalid move, no tiles moved. Try again.")
+
+        ##################### 2048 game window end ###################
     def draw_grid(self):
         # Vertical lines
         for i in range(5):
@@ -610,7 +680,50 @@ class GUI:
         # Horizontal lines
         for i in range(5):
             self.canvas.create_line(0, i * 100, 400, i * 100, fill="#3399ff")
-        
+
+    def assign_mat(self):
+        cell_size = 100 # 100*100 -> 400*400
+        self.canvas.delete("all")  # Clear the canvas before drawing
+        self.draw_grid()
+
+        for row in range(4):
+            for col in range(4):
+                x1, y1 = col * cell_size, row * cell_size
+                x2, y2 = x1 + cell_size, y1 + cell_size
+
+                self.canvas.create_rectangle(x1, y1, x2, y2, fill="#d9d9d9", outline="#ffffff")
+
+                if self.mat[row][col] != 0:
+                    self.canvas.create_text(
+                        (x1 + x2) // 2, 
+                        (y1 + y2) // 2, 
+                        text=str(self.mat[row][col]), 
+                        font=("Bahnschrift", 20), 
+                        fill="black"
+                    )        
+
+    def game_over(self):
+        self.game_over_label = Label(self.mid_frame,
+                                text='GAME OVER!',
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
+                                font = "Bahnschrift 20 bold")
+        self.game_over_label.place(relx=0.5,rely=0.5)
+        self.game_over_label.pack()
+
+        self.total_score = 0
+        for row in range(4):
+            for col in range(4):
+                self.total_score += self.mat[row][col]
+
+        self.display_score_label = Label(self.mid_frame,
+                                text='Your score is:'+ self.total_score,
+                                bg = "#FFFFFF", 
+                                fg = "#000000",
+                                font = "Bahnschrift 15"
+                                )
+        self.display_score_label.place(relx=0.5,rely=0.75)
+        self.display_score_label.pack()
 
     # function to basically start the thread for sending messages
     def sendButton(self, msg):
