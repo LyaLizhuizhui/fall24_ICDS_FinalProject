@@ -69,7 +69,7 @@ class ClientSM:
                     mysend(self.s, json.dumps({"action":"list"}))
                     logged_in = json.loads(myrecv(self.s))["results"]
                     self.out_msg += 'Here are all the users in the system:\n'
-                    self.out_msg += logged_in + '\n\n\n\n\n\n\n\n\n\n\n'
+                    self.out_msg += logged_in + '\n\n\n\n\n\n\n\n\n\n'
 
                 elif my_msg[0] == 'c':
                     peer = my_msg[1:]
@@ -79,7 +79,7 @@ class ClientSM:
                         self.out_msg += 'Connect to ' + peer + '. Chat away!\n\n'
                         self.out_msg += '-----------------------------------\n'
                     else:
-                        self.out_msg += 'Connection unsuccessful\n'
+                        self.out_msg += 'Connection unsuccessful\n\n\n\n\n\n\n\n\n\n\n\n'
 
                 elif my_msg[0] == '?':
                     term = my_msg[1:].strip()
@@ -88,7 +88,7 @@ class ClientSM:
                     if (len(search_rslt)) > 0:
                         self.out_msg += search_rslt + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
                     else:
-                        self.out_msg += '\'' + term + '\'' + ' not found\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+                        self.out_msg += '\'' + term + '\'' + ' not found\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
 
                 elif my_msg[0] == 'p' and my_msg[1:].isdigit():
                     poem_idx = my_msg[1:].strip()
@@ -98,7 +98,7 @@ class ClientSM:
                     if (len(poem) > 0):
                         self.out_msg += poem + '\n\n'
                     else:
-                        self.out_msg += 'Sonnet ' + poem_idx + ' not found\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+                        self.out_msg += 'Sonnet ' + poem_idx + ' not found\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
                 
                 #elif my_msg == "game":
                 #    self.state = S_GAMING

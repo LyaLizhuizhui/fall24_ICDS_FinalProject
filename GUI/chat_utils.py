@@ -15,7 +15,7 @@ SERVER = (CHAT_IP, CHAT_PORT)
 #         time: calendar time in the system\n \
 #         who: to find out who else are there\n \
 #         q: to leave the chat system\n\n"
-menu = "Hello :)"
+menu = "Hello :)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 S_OFFLINE   = 0
 S_CONNECTED = 1

@@ -210,8 +210,8 @@ class GUI:
                                   width = 20,
                                   bg = "#196ba0",
                                   fg = "#FFFFFF",
-                                  command = lambda : self.sendButton("time")
-                                  #command = self.time
+                                  #command = lambda : self.sendButton("time")
+                                  command = self.time
                                   )
         
         self.buttonTime.place(relx = 0.135,
@@ -313,16 +313,16 @@ class GUI:
     
     #################implementation: connect window #################
     def connect(self):
-        self.input_window = Tk()
-        self.input_window.title("Connect")
-        self.input_window.resizable(width = False, 
+        self.connect_window = Tk()
+        self.connect_window.title("Connect")
+        self.connect_window.resizable(width = False, 
                             height = False)
-        self.input_window.configure(width = 400,
+        self.connect_window.configure(width = 400,
                             height = 300,
                             bg = "#FFFFFF")
 
-        self.top_frame = Frame(self.input_window)
-        self.bottom_frame = Frame(self.input_window)
+        self.top_frame = Frame(self.connect_window)
+        self.bottom_frame = Frame(self.connect_window)
 
         self.prompt_label = Label(self.top_frame,
                                 text='Connect to:',
@@ -337,7 +337,7 @@ class GUI:
         self.prompt_label.pack(side='left')
         self.entry.pack(side='left')
 
-        self.input_button = Button(self.bottom_frame,
+        self.connect_button = Button(self.bottom_frame,
                                 text='Connect',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
@@ -346,40 +346,57 @@ class GUI:
                                 command = lambda : self.sendButton("c "+self.entry.get()))
                                 #command = self.connect_with)
                                 #command = lambda : [self.sendButton("c "+self.entry.get()),
-                                #    self.input_window.destroy])
+                                #    self.connect_window.destroy])
         self.quit_button = Button(self.bottom_frame,
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = self.input_window.destroy)
+                                command = self.connect_window.destroy)
 
-        self.input_button.pack(side='left')
+        self.connect_button.pack(side='left')
         self.quit_button.pack(side='left')
 
         self.top_frame.pack()
         self.bottom_frame.pack()
 
-        #kinter.inputloop()
+        #kinter.connectloop()
 
     def connect_with(self):
         lambda : self.sendButton("c "+self.entry.get())
-        self.input_window.destroy
+        self.connect_window.withdraw()
+    #######################end implementation#######################
+    
+    #################implementation: display window #################
+    def time(self):
+        msg = json.dumps({"action":"time"})
+        self.send(msg)
+        time_in = json.loads(self.recv())["results"]
+        messagebox.showinfo('Time', \
+                            "Time is: " + time_in)
+        
+    def contacts(self):
+        msg = json.dumps({"action":"list"})
+        self.send(msg)
+        logged_in = json.loads(self.recv())["results"]
+        messagebox.showinfo('Contacts', \
+                            "Here are all the users in the system:\n" + logged_in)
+    
     #######################end implementation#######################
 
     #################implementation: history window #################
     def history(self):
-        self.input_window = Tk()
-        self.input_window.title("Chat History")
-        self.input_window.resizable(width = False, 
+        self.history_window = Tk()
+        self.history_window.title("Chat History")
+        self.history_window.resizable(width = False, 
                             height = False)
-        self.input_window.configure(width = 400,
+        self.history_window.configure(width = 400,
                             height = 300,
                             bg = "#FFFFFF")
 
-        self.top_frame = Frame(self.input_window)
-        self.bottom_frame = Frame(self.input_window)
+        self.top_frame = Frame(self.history_window)
+        self.bottom_frame = Frame(self.history_window)
 
         self.prompt_label = Label(self.top_frame,
                                 text='Who said this:',
@@ -394,7 +411,7 @@ class GUI:
         self.prompt_label.pack(side='left')
         self.entry.pack(side='left')
 
-        self.input_button = Button(self.bottom_frame,
+        self.history_button = Button(self.bottom_frame,
                                 text='Search',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
@@ -403,40 +420,40 @@ class GUI:
                                 command = lambda : self.sendButton("? "+self.entry.get()))
                                 #command = self.search_history)
                                 #command = lambda : [self.sendButton("? "+self.entry.get()),
-                                #    self.input_window.destroy])
+                                #    self.history_window.destroy])
         self.quit_button = Button(self.bottom_frame,
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = self.input_window.destroy)
+                                command = self.history_window.destroy)
 
-        self.input_button.pack(side='left')
+        self.history_button.pack(side='left')
         self.quit_button.pack(side='left')
 
         self.top_frame.pack()
         self.bottom_frame.pack()
 
-        #kinter.inputloop()
+        #kinter.historyloop()
 
     def search_history(self):
         lambda : self.sendButton("? "+self.entry.get())
-        self.input_window.destroy
+        self.history_window.withdraw()
     #######################end implementation#######################
 
     #################implementation: sonnet window #################
     def sonnet(self):
-        self.input_window = Tk()
-        self.input_window.title("Sonnet")
-        self.input_window.resizable(width = False, 
+        self.sonnet_window = Tk()
+        self.sonnet_window.title("Sonnet")
+        self.sonnet_window.resizable(width = False, 
                             height = False)
-        self.input_window.configure(width = 400,
+        self.sonnet_window.configure(width = 400,
                             height = 300,
                             bg = "#FFFFFF")
 
-        self.top_frame = Frame(self.input_window)
-        self.bottom_frame = Frame(self.input_window)
+        self.top_frame = Frame(self.sonnet_window)
+        self.bottom_frame = Frame(self.sonnet_window)
 
         self.prompt_label = Label(self.top_frame,
                                 text='Sonnet #:',
@@ -451,35 +468,35 @@ class GUI:
         self.prompt_label.pack(side='left')
         self.entry.pack(side='left')
 
-        self.input_button = Button(self.bottom_frame,
+        self.sonnet_button = Button(self.bottom_frame,
                                 text='Get',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = lambda : self.sendButton("p"+self.entry.get()))
-                                #command = self.get_sonnet)
+                                #command = lambda : self.sendButton("p"+self.entry.get()))
+                                command = self.get_sonnet)
                                 #command = lambda : [self.sendButton("p"+self.entry.get()),
-                                #    self.input_window.destroy])
+                                #    self.sonnet_window.destroy])
         self.quit_button = Button(self.bottom_frame,
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = self.input_window.destroy)
+                                command = self.sonnet_window.destroy)
 
-        self.input_button.pack(side='left')
+        self.sonnet_button.pack(side='left')
         self.quit_button.pack(side='left')
 
         self.top_frame.pack()
         self.bottom_frame.pack()
 
-        #kinter.inputloop()
+        #kinter.sonnetloop()
 
     def get_sonnet(self):
-        lambda : self.sendButton("p"+self.entry.get())
-        self.input_window.destroy
+        self.sendButton("p"+self.entry.get())
+        self.sonnet_window.withdraw()
     
     #######################end implementation#######################
 
@@ -500,7 +517,7 @@ class GUI:
             #     continue
             if self.socket in read:
                 peer_msg = self.recv()
-            if self.my_msg == 'time' and self.my_msg == 'who':
+            if self.my_msg == 'time' or self.my_msg == 'who':
                 continue
             if len(self.my_msg) > 0 or len(peer_msg) > 0:
                 # print(self.system_msg)
