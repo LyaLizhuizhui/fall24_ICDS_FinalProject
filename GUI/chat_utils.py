@@ -6,6 +6,7 @@ import time
 CHAT_IP = socket.gethostbyname(socket.gethostname())
 
 CHAT_PORT = 1112
+GAME_SERVER = 3333
 SERVER = (CHAT_IP, CHAT_PORT)
 
 # menu = "\n++++ Choose one of the following commands\n \
@@ -17,10 +18,15 @@ SERVER = (CHAT_IP, CHAT_PORT)
 #         q: to leave the chat system\n\n"
 menu = "Hello :)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
+#         add one function:
+#         game: start game
+
+
 S_OFFLINE   = 0
 S_CONNECTED = 1
 S_LOGGEDIN  = 2
 S_CHATTING  = 3
+S_GAMING = 4
 
 SIZE_SPEC = 5
 

@@ -367,7 +367,7 @@ class GUI:
         lambda : self.sendButton("c "+self.entry.get())
         self.connect_window.withdraw()
     #######################end implementation#######################
-    
+
     #################implementation: display window #################
     def time(self):
         msg = json.dumps({"action":"time"})
