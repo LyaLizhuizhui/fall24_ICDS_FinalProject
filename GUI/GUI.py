@@ -544,7 +544,6 @@ class GUI:
                                 font = "Bahnschrift 12")
         self.rule_label.pack(side='left')
 
-        # 上下左右buttons
         # Up Button
         self.up_button = Button(self.bottom_frame,
                             text='↑',
@@ -552,7 +551,7 @@ class GUI:
                             width = 3,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            # command = self.game_window.destroy
+                            command = self.up
                         )
 
         self.up_button.place(relx = 0.7, 
@@ -565,7 +564,7 @@ class GUI:
                             width = 3,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            # command = self.game_window.destroy
+                            command = self.down
                         )
         self.up_button.place(relx = 0.7, 
                        rely = 0.8)
@@ -577,7 +576,7 @@ class GUI:
                             width = 3,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            # command = self.game_window.destroy
+                            command= self.left
                         )
         self.up_button.place(relx = 0.6, 
                        rely = 0.5)
@@ -588,7 +587,7 @@ class GUI:
                             width = 3,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            # command = self.game_window.destroy
+                            command = self.right
                         )
         self.up_button.place(relx = 0.8, 
                        rely = 0.5)
@@ -601,6 +600,66 @@ class GUI:
         self.top_frame.pack()
         self.mid_frame.pack()
         self.bottom_frame.pack()
+
+    def up(self):
+        # call the move_up function
+        mat, flag = logic.move_up(mat)
+
+        # get the current state and print it
+        status = logic.get_current_state(mat)
+        print(status)
+
+        # if game not over then continue
+        # and add a new two
+        if flag:
+            if(status == 'GAME NOT OVER'):
+                logic.add_new_2(mat)
+
+        # else break the loop 
+            else:
+                break
+        #else
+        else:
+            print("Invalid move, no tiles moved. Try again.")
+
+
+    def down(self):
+        mat, flag = logic.move_down(mat)
+        status = logic.get_current_state(mat)
+        print(status)
+        if flag:
+            if(status == 'GAME NOT OVER'):
+                logic.add_new_2(mat)
+            else:
+                break
+        else:
+            print("Invalid move, no tiles moved. Try again.")
+
+    
+    def left(self):
+        mat, flag = logic.move_left(mat)
+        status = logic.get_current_state(mat)
+        print(status)
+        if flag:
+            if(status == 'GAME NOT OVER'):
+                logic.add_new_2(mat)
+            else:
+                break
+        else:
+            print("Invalid move, no tiles moved. Try again.")
+
+    def right(self):
+        mat, flag = logic.move_right(mat)
+        status = logic.get_current_state(mat)
+        print(status)
+        if flag:
+            if(status == 'GAME NOT OVER'):
+                logic.add_new_2(mat)
+            else:
+                break
+        else:
+            print("Invalid move, no tiles moved. Try again.")
+
         ##################### 2048 game window end ###################
 
     def draw_grid(self):

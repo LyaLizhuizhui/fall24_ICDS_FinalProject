@@ -27,6 +27,8 @@ def start_game():
     # calling the function to add
     # a new 2 in grid after every step
     add_new_2(mat)
+    add_new_2(mat)
+    
     return mat
 
 # function to add a new 2 in
