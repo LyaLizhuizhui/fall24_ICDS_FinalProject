@@ -1,9 +1,11 @@
 import pygame
 import numpy as np
 
+pygame.init()
+
 size_of_board = 600
-grid_size = 5
-win_condition = 5
+grid_size = 3
+win_condition = 3
 cell_size = size_of_board // grid_size
 symbol_size = (cell_size - cell_size // 4) // 2
 symbol_thickness = 10
@@ -13,8 +15,6 @@ green_color = (123, 192, 67)
 
 player_x = -1
 player_o = 1
-
-pygame.init()
 
 class TicTacToe:
     def __init__(self, role = "X"):
@@ -76,20 +76,29 @@ class TicTacToe:
 
     def draw_gameover(self):
         font = pygame.font.SysFont('Arial', 30)
+        if not game_over:
+            if self.x_wins:
+                text = font.render("Player X wins!", True, symbol_x_color)
+                self.x_score += 1
+            elif self.o_wins:
+                text = font.render("Player O wins!", True, symbol_o_color)
+                self.o_score += 1
+            elif self.tie:
+                text = font.render("It's a tie!", True, (200, 200, 200))
+            self.game_over = True
+
         if self.x_wins:
             text = font.render("Player X wins!", True, symbol_x_color)
-            self.x_score += 1
         elif self.o_wins:
             text = font.render("Player O wins!", True, symbol_o_color)
-            self.o_score += 1
         elif self.tie:
             text = font.render("It's a tie!", True, (200, 200, 200))
 
-        self.screen.blit(text, (size_of_board // 4, size_of_board // 4))
+        self.screen.blit(text, (size_of_board // 4, size_of_board // 2))
 
-        score_text = f'Player X: {self.x_score}  Player O: {self.o_score}  Ties: {self.tie_score}'
-        score = font.render(score_text, True, green_color)
-        self.screen.blit(score, (size_of_board // 4, size_of_board // 2))
+        # score_text = f'Player X: {self.x_score}  Player O: {self.o_score}  Ties: {self.tie_score}'
+        # score = font.render(score_text, True, green_color)
+        # self.screen.blit(score, (size_of_board // 4, size_of_board // 2))
 
     def handle_click(self, pos):
         if self.game_over:
