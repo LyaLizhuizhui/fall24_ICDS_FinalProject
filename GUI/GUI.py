@@ -11,9 +11,8 @@ from tkinter import messagebox
 from chat_utils import *
 import json
 import logic
-global g_status
-g_status = 'Please Start! :)' 
-global total_score
+
+g_statue = "Please start!"
 total_score = 0
 
 # GUI class for the chat
@@ -510,8 +509,10 @@ class GUI:
 
     ##################### implementation: 2048 game window ###################
     def game(self):   
-        g_status = 'Please Start! :)'  
-        total_score = 0  
+        global g_status, total_score
+        # self.g_status = 'Please Start! :)' 
+        # self.total_score = 0
+
         self.mat = logic.start_game()
         self.flag = True
         
@@ -569,7 +570,7 @@ class GUI:
 
         #initial total score and status
         self.display_status_label = Label(self.top_frame,
-                                text=self.g_status,
+                                text=g_status,
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 16"
@@ -577,7 +578,7 @@ class GUI:
         self.display_status_label.pack(pady=14)
         
         self.display_score_label = Label(self.left_frame,
-                                text='Your score is: '+ str(self.total_score),
+                                text='Your score is: '+ str(total_score),
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 15"
@@ -765,20 +766,20 @@ class GUI:
         for row in range(4):
             for col in range(4):
                 current_score += self.mat[row][col]
-        self.total_score = current_score
+        total_score = current_score
 
         self.display_status_label.destroy()
         self.display_score_label.destroy()
 
         self.display_status_label = Label(self.top_frame,
-                                text=self.g_status,
+                                text=g_status,
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 16"
                                 )
         self.display_status_label.pack(pady=14)
         self.display_score_label = Label(self.left_frame,
-                                text='Your score is: '+ str(self.total_score),
+                                text='Your score is: '+ str(total_score),
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 15"
