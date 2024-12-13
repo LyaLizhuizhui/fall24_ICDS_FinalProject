@@ -53,14 +53,15 @@ def add_new_2(mat):
 
 # function to get the current
 # state of game
-def get_current_state(mat):
-
+def get_current_state(mat,flag):
+    if not flag:
+        return 'INVALID MOVE'
     # if any cell contains
     # 2048 we have won
     for i in range(4):
         for j in range(4):
             if(mat[i][j]== 2048):
-                return 'WON'
+                return 'WE WON'
 
     # if we are still left with
     # atleast one empty cell
@@ -89,7 +90,7 @@ def get_current_state(mat):
             return 'GAME NOT OVER'
 
     # else we have lost the game
-    return 'LOST'
+    return 'GAME OVER :('
 
 # all the functions defined below
 # are for left swap initially.
@@ -188,16 +189,17 @@ def transpose(mat):
 # if we move / swipe left
 def move_left(grid):
 
-    # first compress the grid
+    # First compress the grid
     new_grid, changed1 = compress(grid)
-
-    # then merge the cells.
+    
+    # Then merge the cells
     new_grid, changed2 = merge(new_grid)
     
-    changed = changed1 or changed2
-
-    # again compress after merging.
-    new_grid, temp = compress(new_grid)
+    # Second compression to shift tiles after merging
+    new_grid, changed3 = compress(new_grid)
+    
+    # Determine if any changes occurred
+    changed = changed1 or changed2 or changed3
 
     # return new matrix and bool changed
     # telling whether the grid is same
