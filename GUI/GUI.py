@@ -542,9 +542,8 @@ class GUI:
 
         # Text
         self.text_label = Label(self.top_frame,
-                                text=' 2048         ',
-                                bg = "#FFFFFF", 
-                                fg = "#000000",
+                                text='     2048     ', 
+                                fg = "#03396c",
                                 font = "Bahnschrift 36 bold")
         self.text_label.pack(side='left')
 
