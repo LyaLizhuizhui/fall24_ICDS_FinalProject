@@ -547,8 +547,8 @@ class GUI:
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
-                                bg = "#FFFFFF",
-                                fg = "#000000",
+                                bg = "#196ba0",
+                                fg = "#FFFFFF",
                                 command = self.game_window.destroy)
         self.quit_button.pack(side='right')
 
