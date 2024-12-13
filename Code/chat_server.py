@@ -1,4 +1,4 @@
-#E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/chat_server.py
+#E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/Code/chat_server.py
 import time
 import socket
 import select
@@ -29,8 +29,8 @@ class Server:
         # self.sonnet = pkl.load(self.sonnet_f)
         # self.sonnet_f.close()
         # self.sonnet = indexer_good.PIndex("AllSonnets.txt")
-        self.sonnet = indexer_good.PIndex("C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
-        # self.sonnet = indexer_good.PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
+        # self.sonnet = indexer_good.PIndex("C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/Code/AllSonnets.txt")
+        self.sonnet = indexer_good.PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/Code/AllSonnets.txt")
         self.highest_score = 0
 
     def new_client(self, sock):
@@ -167,8 +167,11 @@ class Server:
 #==============================================================================
             elif msg["action"] == "score":
                 score = int(msg["target"])
+                print('new score in: ' + msg["target"])
                 if score > self.highest_score:
                     self.highest_score = score
+                    print('highest score renewed')
+                print('highest score: ' + str(self.highest_score))
                 mysend(from_sock, json.dumps({"action":"score", "results":self.highest_score}))
 #==============================================================================
 # the "from" guy has had enough (talking to "to")!

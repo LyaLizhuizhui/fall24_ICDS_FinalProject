@@ -75,9 +75,9 @@ class ClientSM:
                     if self.connect_to(peer) == True:
                         self.state = S_CHATTING
                         self.out_msg += 'Connect to ' + peer + '. Chat away!\n\n'
-                        self.out_msg += '-----------------------------------\n'
+                        self.out_msg += '-----------------------------------\n\n\n\n\n\n\n\n'
                     else:
-                        self.out_msg += 'Connection unsuccessful\n\n\n\n\n\n\n\n\n\n\n\n'
+                        self.out_msg += 'Connection unsuccessful\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
 
                 elif my_msg[0] == '?':
                     term = my_msg[1:].strip()

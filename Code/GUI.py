@@ -212,8 +212,8 @@ class GUI:
                                   width = 20,
                                   bg = "#196ba0",
                                   fg = "#FFFFFF",
-                                  command = lambda : self.sendButton("time")
-                                  #command = self.time
+                                  #command = lambda : self.sendButton("time")
+                                  command = self.time
                                   )
         
         self.buttonTime.place(relx = 0.135,
@@ -229,8 +229,8 @@ class GUI:
                                   width = 20,
                                   bg = "#196ba0",
                                   fg = "#FFFFFF",
-                                  command = lambda : self.sendButton("who")
-                                  #command = self.contacts
+                                  #command = lambda : self.sendButton("who")
+                                  command = self.contacts
                                   )
         
         self.buttonContacts.place(relx = 0.26,
@@ -316,24 +316,21 @@ class GUI:
     
     ################implementation: quit #################
     def quit_system(self):
+        self.sendButton("bye")
         self.sendButton("q")
         self.Window.destroy()
     #######################end implementation#######################
 
     #################implementation: display window #################
     def time(self):
-        msg = json.dumps({"action":"time"})
-        self.send(msg)
-        time_in = json.loads(self.recv())["results"]
-        messagebox.showinfo('Time', \
-                            "Time is: " + time_in)
+        self.sendButton("time")
+        time_in = self.system_msg[-38:-15]
+        messagebox.showinfo('Time', time_in)
         
     def contacts(self):
-        msg = json.dumps({"action":"list"})
-        self.send(msg)
-        logged_in = json.loads(self.recv())["results"]
-        messagebox.showinfo('Contacts', \
-                            "Here are all the users in the system:\n" + logged_in)
+        self.sendButton("who")
+        logged_in = self.system_msg[-101:-10]
+        messagebox.showinfo('Contacts', logged_in)
     
     #######################end implementation#######################
 
@@ -638,14 +635,15 @@ class GUI:
         self.calc_total()
         # Handle the different statuses
         if g_status == 'GAME OVER :(':
-            print("Game Over. You LOST!")
-            self.sendButton("total"+ total_score)
-        elif g_status == 'WE WON':
-            print("Congratulations, you WON!")
-        elif g_status == 'INVALID MOVE':
-            print(g_status)
+            # print("Game Over. You LOST!")
+            self.sendButton("total"+ str(total_score))
+            total_score = 0
+        # elif g_status == 'WE WON':
+        #     print("Congratulations, you WON!")
+        # elif g_status == 'INVALID MOVE':
+        #     print(g_status)
         elif g_status == 'GAME NOT OVER':
-            print(g_status)
+            # print(g_status)
             logic.add_new_2(self.mat)
 
     def quitgame(self):
