@@ -517,13 +517,26 @@ class GUI:
         self.game_window.configure(width = 600,
                             height = 800,
                             bg = "#FFFFFF")
+        # Frames
         self.top_frame = Frame(self.game_window) # top
         self.mid_frame = Frame(self.game_window) # mid: canvas
         self.bottom_frame = Frame(self.game_window) # bottom
 
+        self.top_frame.pack()
+        self.mid_frame.pack()
+        self.bottom_frame.pack()
+
+        # Bottom left frame
+        self.left_frame = Frame(self.bottom_frame, bg="#FFFFFF", width=200)
+        self.left_frame.pack(side=LEFT, fill=BOTH, expand=True)
+
+        # Bottom right frame
+        self.right_frame = Frame(self.bottom_frame, bg="#FFFFFF", width=200)
+        self.right_frame.pack(side=RIGHT, fill=BOTH, expand=True)
+
         # Text
         self.text_label = Label(self.top_frame,
-                                text=' 2048              ',
+                                text=' 2048         ',
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 36 bold")
@@ -534,8 +547,8 @@ class GUI:
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
                                 width = 10,
-                                bg = "#196ba0",
-                                fg = "#FFFFFF",
+                                bg = "#FFFFFF",
+                                fg = "#000000",
                                 command = self.game_window.destroy)
         self.quit_button.pack(side='right')
 
@@ -550,88 +563,85 @@ class GUI:
         self.assign_mat()
 
         #initial total score and status
-        self.display_status_label = Label(self.bottom_frame,
+        self.display_status_label = Label(self.top_frame,
                                 text=self.g_status,
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
-                                font = "Bahnschrift 15"
+                                font = "Bahnschrift 16"
                                 )
-        self.display_status_label.pack(side='left')
-        self.display_score_label = Label(self.bottom_frame,
+        self.display_status_label.pack(pady=14)
+        
+        self.display_score_label = Label(self.left_frame,
                                 text='Your score is: '+ str(self.total_score),
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 15"
                                 )
         #self.display_score_label.place(relx=0.5,rely=0.75)
-        self.display_score_label.pack(side='left')
+        self.display_score_label.pack(side='top')
         #self.display_score_label.grid(row=0, column=0, sticky='w', padx=10)
 
         # Description / rule
-        self.rule_label = Label(self.bottom_frame,
+        self.rule_label = Label(self.left_frame,
                                 text='Combine matching tiles on a grid\nby sliding them to create larger numbers,\naiming to reach 2048.',
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 11")
-        self.rule_label.pack(side='left')
+        self.rule_label.pack(side='bottom')
         #self.rule_label.grid(row=1, column=0, sticky='w', padx=10)
 
         # Up Button
-        self.up_button = Button(self.bottom_frame,
+        self.up_button = Button(self.right_frame,
                             text='↑',
                             font = "Bahnschrift 12 bold", 
-                            width = 3,
+                            width = 2,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
                             command = lambda: self.up(self.flag)
                         )
 
-        self.up_button.place(relx = 0.7, 
+        self.up_button.place(relx = 0.5, 
                        rely = 0)
 
         # Down Button
-        self.down_button = Button(self.bottom_frame,
+        self.down_button = Button(self.right_frame,
                             text='↓',
                             font = "Bahnschrift 12 bold", 
-                            width = 3,
+                            width = 2,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
                             command = lambda: self.down(self.flag)
                         )
-        self.down_button.place(relx = 0.7, 
-                       rely = 0.8)
+        self.down_button.place(relx = 0.5, 
+                       rely = 0.6)
 
         # Left Button
-        self.left_button = Button(self.bottom_frame,
+        self.left_button = Button(self.right_frame,
                             text='←',
                             font = "Bahnschrift 12 bold", 
-                            width = 3,
+                            width = 2,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
                             command= lambda: self.left(self.flag)
                         )
-        self.left_button.place(relx = 0.6, 
-                       rely = 0.5)
+        self.left_button.place(relx = 0.3, 
+                       rely = 0.3)
         # Right Button
-        self.right_button = Button(self.bottom_frame,
+        self.right_button = Button(self.right_frame,
                             text='→',
                             font = "Bahnschrift 12 bold", 
-                            width = 3,
+                            width = 2,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
                             command = lambda: self.right(self.flag)
                         )
-        self.right_button.place(relx = 0.9, 
-                       rely = 0.5)
+        self.right_button.place(relx = 0.7, 
+                       rely = 0.3)
 
         # self.up_button.pack(side = "top",padx=1,pady=2)
         # self.down_button.pack(side = "bottom",padx=1,pady=2)
         # self.left_button.pack(side = "left",padx=3,pady=2)
         # self.right_button.pack(side = "right",padx=3,pady=2)
-
-        self.top_frame.pack()
-        self.mid_frame.pack()
-        self.bottom_frame.pack()
 
     def up(self, flag):
         # call the move_up function
@@ -644,7 +654,7 @@ class GUI:
         # if game not over then continue
         # and add a new two
         if self.flag:
-            self.calc_total(self.total_score)
+            self.calc_total(self.g_status,self.total_score)
             if(self.g_status == 'GAME NOT OVER'):
                 logic.add_new_2(self.mat)
 
@@ -661,7 +671,7 @@ class GUI:
         self.g_status = logic.get_current_state(self.mat)
         print(self.g_status)
         if self.flag:
-            self.calc_total(self.total_score)
+            self.calc_total(self.g_status,self.total_score)
             if(self.g_status == 'GAME NOT OVER'):
                 logic.add_new_2(self.mat)
             else:
@@ -675,7 +685,7 @@ class GUI:
         self.g_status = logic.get_current_state(self.mat)
         print(self.g_status)
         if self.flag:
-            self.calc_total(self.total_score)
+            self.calc_total(self.g_status,self.total_score)
             if(self.g_status == 'GAME NOT OVER'):
                 logic.add_new_2(self.mat)
             else:
@@ -689,7 +699,7 @@ class GUI:
         self.g_status = logic.get_current_state(self.mat)
         print(self.g_status)
         if self.flag:
-            self.calc_total(self.total_score)
+            self.calc_total(self.g_status,self.total_score)
             if(self.g_status == 'GAME NOT OVER'):
                 logic.add_new_2(self.mat)
             else:
@@ -761,27 +771,31 @@ class GUI:
         self.game_over_label.place(relx=0.5,rely=0.5)
         self.game_over_label.pack()
 
-    def calc_total(self,total_score):
+    def calc_total(self,g_status,total_score):
+        current_score = 0
         for row in range(4):
             for col in range(4):
-                self.total_score += self.mat[row][col]
+                current_score += self.mat[row][col]
+        self.total_score = current_score
+
         self.display_status_label.destroy()
         self.display_score_label.destroy()
-        self.display_status_label = Label(self.bottom_frame,
+
+        self.display_status_label = Label(self.top_frame,
                                 text=self.g_status,
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
-                                font = "Bahnschrift 15"
+                                font = "Bahnschrift 16"
                                 )
-        self.display_status_label.pack(side='left')
-        self.display_score_label = Label(self.mid_frame,
+        self.display_status_label.pack(pady=14)
+        self.display_score_label = Label(self.left_frame,
                                 text='Your score is: '+ str(self.total_score),
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 15"
                                 )
         #self.display_score_label.place(relx=0.5,rely=0.75)
-        self.display_score_label.pack(side='left')
+        self.display_score_label.pack(side='top')
 
     # function to basically start the thread for sending messages
     def sendButton(self, msg):
