@@ -32,17 +32,14 @@ class Index:
         words = m.split()
         self.total_words += len(words)
         for wd in words:
-            self.index[wd] = self.index.get(wd, []) + [l] 
-    #### Alternatively, the following also works
-#        for wd in words:
-#            try:
-#                self.index[wd]+= [l]
-#            except KeyError:
-#                self.index[wd] = [l]
+            if wd not in self.index:
+                self.index[wd] = [l,]
+            else:
+                self.index[wd].append(l)
                                      
     def search(self, term):
         msgs = []
-        if term in self.index.keys():
+        if (term in self.index.keys()):
             indices = self.index[term]
             msgs = [(i, self.msgs[i]) for i in indices]
         return msgs
@@ -50,9 +47,7 @@ class Index:
 class PIndex(Index):
     def __init__(self, name):
         super().__init__(name)
-        #roman_int_f = open('C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/Code/roman.txt.pk', 'rb')
-        roman_int_f = open('E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/Code/roman.txt.pk', 'rb')
-        #local: roman_int_f = open('roman.txt.pk', 'rb')
+        roman_int_f = open('roman.txt.pk', 'rb')
         self.int2roman = pickle.load(roman_int_f)
         roman_int_f.close()
         self.load_poems()
@@ -65,7 +60,7 @@ class PIndex(Index):
     
     def get_poem(self, p):
         p_str = self.int2roman[p] + '.'
-        p_next_str = self.int2roman[p+1] + '.'
+        p_next_str = self.int2roman[p + 1] + '.'
         temp = self.search(p_str)
         if temp:
             [(go_line, m)] = temp
@@ -84,9 +79,7 @@ class PIndex(Index):
         return poem
     
 if __name__ == "__main__":
-    #sonnets = PIndex('C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/Code/AllSonnets.txt')
-    sonnets = PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/Code/AllSonnets.txt")
-    #local:sonnets = PIndex("AllSonnets.txt")
+    sonnets = PIndex("AllSonnets.txt")
     p3 = sonnets.get_poem(3)
     print(p3)
     s_love = sonnets.search("love")
