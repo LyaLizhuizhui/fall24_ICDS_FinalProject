@@ -8,59 +8,47 @@ import random
 
 # function to initialize game / mat
 # at the start
+
 def start_game():
-    # Initialize the 4x4 grid with zeros
     mat = [[0] * 4 for _ in range(4)]
-
-    # Add the first two tiles (2's) to the grid
     add_new_2(mat)
     add_new_2(mat)
-
     # Return the initialized grid
     return mat
 
-# Function to add a new '2' in a random empty cell in the grid
+# Function to add a new '2' 
+# in a random empty cell in the grid
 def add_new_2(mat):
     # Find all empty cells (cells with 0)
     empty_cells = [(i, j) for i in range(4) for j in range(4) if mat[i][j] == 0]
-
-    # If there are no empty cells, return (board is full)
     if not empty_cells:
         return
-
     # Choose a random empty cell from the list
     r, c = random.choice(empty_cells)
-
-    # Place a '2' in the randomly chosen empty cell
     mat[r][c] = 2
 
 # function to get the current
 # state of game
 def get_current_state(mat, flag):
-    # Check if the game is won
     for i in range(4):
         for j in range(4):
             if mat[i][j] == 2048:
                 return 'WE WON'
 
-    # Check if no valid moves exist (either no empty cells and no possible merges)
+    # Check if no valid moves exist 
+    # (either no empty cells and no possible merges)
     for i in range(4):
         for j in range(4):
             current_value = mat[i][j]
             for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
                 nr, nc = i + dr, j + dc
                 if 0 <= nr < 4 and 0 <= nc < 4 and (mat[nr][nc] == current_value or mat[nr][nc] == 0):
-                    return 'GAME NOT OVER'  # A valid move exists, game is not over
+                    return 'GAME NOT OVER' 
 
-    # If no empty cells and no valid moves, game is over
     if all(mat[i][j] != 0 for i in range(4) for j in range(4)):
         return 'GAME OVER :('
-
-    # If the flag is False and no valid moves left, check for invalid move
     if not flag:
         return 'INVALID MOVE'
-
-    # If none of the above, the game is still ongoing and no invalid move was made
     return 'GAME NOT OVER'
     
 
@@ -169,15 +157,14 @@ def move_left(mat):
     # Second compression to shift tiles after merging
     new_mat, changed3 = compress(new_mat)
 
-    # Determine if any changes occurred (only if a valid shift or merge happened)
+    # Determine if any changes occurred 
+    # (only if a valid shift or merge happened)
     changed = changed1 or changed2 or changed3
 
     # Check if new blocks were added, but no valid moves occurred
     if not changed and any(mat[i][j] == 0 for i in range(4) for j in range(4)):
-        # If there are new blocks, but no moves were made, set changed to False
-        return mat, False  # No move or merge happened
+        return mat, False 
     
-    # Return new mat and the correct flag
     return new_mat, changed
 
 # function to update the matrix
