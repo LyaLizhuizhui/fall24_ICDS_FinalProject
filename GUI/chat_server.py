@@ -29,9 +29,9 @@ class Server:
         # self.sonnet = pkl.load(self.sonnet_f)
         # self.sonnet_f.close()
         # self.sonnet = indexer_good.PIndex("AllSonnets.txt") # local
-        # self.sonnet = indexer_good.PIndex("C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
-        self.sonnet = indexer_good.PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
-
+        self.sonnet = indexer_good.PIndex("C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
+        # self.sonnet = indexer_good.PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
+        self.highest_score = 0
 
     def new_client(self, sock):
         #add to all sockets and to new clients
@@ -163,6 +163,14 @@ class Server:
                 print('server side search: ' + search_rslt)
                 mysend(from_sock, json.dumps({"action":"search", "results":search_rslt}))
 #==============================================================================
+#                 implementation: game
+#==============================================================================
+            elif msg["action"] == "score":
+                score = int(msg["target"])
+                if score > self.highest_score:
+                    self.highest_score = score
+                mysend(from_sock, json.dumps({"action":"score", "results":self.highest_score}))
+#==============================================================================
 # the "from" guy has had enough (talking to "to")!
 #==============================================================================
             elif msg["action"] == "disconnect":
@@ -174,20 +182,6 @@ class Server:
                     g = the_guys.pop()
                     to_sock = self.logged_name2sock[g]
                     mysend(to_sock, json.dumps({"action":"disconnect"}))
-            elif msg["action"] == "game":
-                    from_name = self.logged_sock2name[from_sock]
-                    the_guys = self.group.list_me(from_name)
-                    if len(the_guys) == 2:
-                        for g in the_guys:
-                            to_sock = self.logged_name2sock[g]
-                            # assign roles:发起游戏的人是先手X
-                            if g == from_name:
-                                role = "X"
-                            else:
-                                role = "O"
-                            mysend(to_sock, json.dumps({"action":"game", "role":role,"opponent":from_name if role == "O" else the_guys[1]}))  
-                    else:
-                        mysend(from_sock, json.dumps({"action": "error", "msg": "Please connect to someone before starting a game."}))
 #==============================================================================
 #                 the "from" guy really, really has had enough
 #==============================================================================

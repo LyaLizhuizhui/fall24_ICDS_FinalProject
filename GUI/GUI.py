@@ -555,7 +555,7 @@ class GUI:
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                command = self.game_window.destroy)
+                                command = self.quitgame)
         self.quit_button.pack(side='right')
 
         # Canvas
@@ -650,13 +650,13 @@ class GUI:
         # self.right_button.pack(side = "right",padx=3,pady=2)
 
     def check_status(self): 
-        global flag
-        global g_status
+        global flag, g_status, total_score
         g_status = logic.get_current_state(self.mat, flag)
         self.calc_total()
         # Handle the different statuses
         if g_status == 'GAME OVER :(':
             print("Game Over. You LOST!")
+            self.sendButton("total"+ total_score)
         elif g_status == 'WE WON':
             print("Congratulations, you WON!")
         elif g_status == 'INVALID MOVE':
@@ -665,6 +665,12 @@ class GUI:
             print(g_status)
             logic.add_new_2(self.mat)
 
+    def quitgame(self):
+        global total_score
+        self.game_window.destroy()
+        self.sendButton("total"+ str(total_score))
+        total_score = 0
+        
     def up(self):
         global flag
         # call the move_up function
@@ -757,6 +763,15 @@ class GUI:
                 for col in range(4):
                     total_score += self.mat[row][col]
 
+        # # Send score to server
+        # try:
+        #     msg = json.dumps({"action": "score_update", "score": total_score})
+        #     msg_size = str(len(msg))
+        #     self.socket.send(msg_size.encode() + msg.encode())
+        # except Exception as e:
+        #     print("error")  
+
+        # Display status
         self.display_status_label.destroy()
         self.display_score_label.destroy()
 
@@ -774,7 +789,6 @@ class GUI:
                                 fg = "#000000",
                                 font = "Bahnschrift 15"
                                 )
-        #self.display_score_label.place(relx=0.5,rely=0.75)
         self.display_score_label.pack(side='top')
 
     # function to basically start the thread for sending messages
@@ -791,6 +805,15 @@ class GUI:
             peer_msg = []
             if self.socket in read:
                 peer_msg = self.recv()
+            # if peer_msg:
+            #     message = json.loads(peer_msg)
+            #     if message["action"] == "new_high_score":
+            #     # Update the displayed high score
+            #         new_high_score = message["score"]
+            #         self.textCons.config(state=NORMAL)
+            #         self.textCons.insert(END, f"New high score: {new_high_score}\n")
+            #         self.textCons.config(state=DISABLED)
+
             if len(self.my_msg) > 0 or len(peer_msg) > 0:
                 # print(self.system_msg)
                 self.system_msg += self.sm.proc(self.my_msg, peer_msg)

@@ -1,5 +1,4 @@
 from chat_utils import *
-from game import TicTacToe
 import json
 
 class ClientSM:
@@ -99,10 +98,12 @@ class ClientSM:
                     else:
                         self.out_msg += 'Sonnet ' + poem_idx + ' not found\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
                 
-                elif my_msg == "game":
-                    mysend(self.s, json.dumps({"action": "game"}))
-                    self.out_msg += "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEntering game mode :)"
-                    self.state = S_GAMING
+                elif my_msg[:5] == "total" and my_msg[5:].isdigit():
+                    my_score = my_msg[5:].strip()
+                    mysend(self.s, json.dumps({"action": "score", "target":my_score}))
+                    highest_score = json.loads(myrecv(self.s))["results"]
+                    self.out_msg += "Your score is: "+ my_score + "\n"
+                    self.out_msg += "Highest score is: "+ str(highest_score) + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
                 
                 else:
                     self.out_msg += menu
@@ -138,31 +139,12 @@ class ClientSM:
                 elif peer_msg["action"] == "disconnect":
                     self.state = S_LOGGEDIN
 
-                elif peer_msg["action"] == "game":
-                    role = peer_msg["role"]
-                    opponent = peer_msg["opponent"]
-                    self.role = role
-                    self.out_msg += f"Starting game as {self.role} against {opponent}.\n"
-                    self.state = S_GAMING
-                
-                elif peer_msg["action"] == "error":
-                    self.out_msg += peer_msg["msg"] + "\n"
                 else:
                     self.out_msg += peer_msg["from"] + peer_msg["message"] + '\n'
 
             # Display the menu again
             if self.state == S_LOGGEDIN:
                 self.out_msg += menu
-
-        elif self.state == S_GAMING:
-            game = TicTacToe(role = self.role)
-            # assign roles
-            # if self.role == "X":
-            #     game.player_turn = player_x 
-            # else:
-            #     game.player_turn = player_O
-            game.run()
-            self.state = S_LOGGEDIN
 #==============================================================================
 # invalid state
 #==============================================================================
