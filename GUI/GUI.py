@@ -762,15 +762,6 @@ class GUI:
                         fill="#FFFFFF"
                     )        
 
-    def game_over(self):
-        self.game_over_label = Label(self.mid_frame,
-                                text='GAME OVER!',
-                                bg = "#FFFFFF", 
-                                fg = "#000000",
-                                font = "Bahnschrift 20 bold")
-        self.game_over_label.place(relx=0.5,rely=0.5)
-        self.game_over_label.pack()
-
     def calc_total(self,g_status,total_score):
         current_score = 0
         for row in range(4):
