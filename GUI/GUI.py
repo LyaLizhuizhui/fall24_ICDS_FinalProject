@@ -11,6 +11,10 @@ from tkinter import messagebox
 from chat_utils import *
 import json
 import logic
+global g_status
+g_status = 'Please Start! :)' 
+global total_score
+total_score = 0
 
 # GUI class for the chat
 class GUI:
@@ -505,11 +509,12 @@ class GUI:
     #######################end implementation#######################
 
     ##################### implementation: 2048 game window ###################
-    def game(self):  
+    def game(self):   
+        g_status = 'Please Start! :)'  
+        total_score = 0  
         self.mat = logic.start_game()
         self.flag = True
-        self.g_status = 'Please Start! :)'
-        self.total_score = 0
+        
         self.game_window = Tk()
         self.game_window.title("2048 GAME")
         self.game_window.resizable(width = False, 
@@ -648,64 +653,57 @@ class GUI:
         self.mat, self.flag = logic.move_up(self.mat)
         self.assign_mat()
         # get the current state and print it
-        self.g_status = logic.get_current_state(self.mat)
-        print(self.g_status)
+        # Get the game status, including invalid moves
+        status = logic.get_current_state(self.mat, flag)
 
-        # if game not over then continue
-        # and add a new two
-        if self.flag:
-            self.calc_total(self.g_status,self.total_score)
-            if(self.g_status == 'GAME NOT OVER'):
-                logic.add_new_2(self.mat)
-
-        # else break the loop 
-            else:
-                self.game_over()
-        #else
-        else:
-            print("Invalid move, no tiles moved. Try again.")
+        # Handle the different statuses
+        if status == 'INVALID MOVE':
+            print(status)
+        elif status == 'WE WON':
+            print("Congratulations, you WON!")
+        elif status == 'GAME OVER :(':
+            print("Game Over. You LOST!")
+        elif status == 'GAME NOT OVER':
+            logic.add_new_2(self.mat)
 
     def down(self, flag):
         self.mat, self.flag = logic.move_down(self.mat)
         self.assign_mat()
-        self.g_status = logic.get_current_state(self.mat)
-        print(self.g_status)
-        if self.flag:
-            self.calc_total(self.g_status,self.total_score)
-            if(self.g_status == 'GAME NOT OVER'):
-                logic.add_new_2(self.mat)
-            else:
-                self.game_over()
-        else:
-            print("Invalid move, no tiles moved. Try again.")
+        status = logic.get_current_state(self.mat, flag)
+        if status == 'INVALID MOVE':
+            print(status)
+        elif status == 'WE WON':
+            print("Congratulations, you WON!")
+        elif status == 'GAME OVER :(':
+            print("Game Over. You LOST!")
+        elif status == 'GAME NOT OVER':
+            logic.add_new_2(self.mat)
 
     def left(self, flag):
         self.mat, self.flag = logic.move_left(self.mat)
         self.assign_mat()
-        self.g_status = logic.get_current_state(self.mat)
-        print(self.g_status)
-        if self.flag:
-            self.calc_total(self.g_status,self.total_score)
-            if(self.g_status == 'GAME NOT OVER'):
-                logic.add_new_2(self.mat)
-            else:
-                self.game_over()
-        else:
-            print("Invalid move, no tiles moved. Try again.")
+        status = logic.get_current_state(self.mat, flag)
+        if status == 'INVALID MOVE':
+            print(status)
+        elif status == 'WE WON':
+            print("Congratulations, you WON!")
+        elif status == 'GAME OVER :(':
+            print("Game Over. You LOST!")
+        elif status == 'GAME NOT OVER':
+            logic.add_new_2(self.mat)
 
     def right(self, flag):
         self.mat, self.flag = logic.move_right(self.mat)
         self.assign_mat()
-        self.g_status = logic.get_current_state(self.mat)
-        print(self.g_status)
-        if self.flag:
-            self.calc_total(self.g_status,self.total_score)
-            if(self.g_status == 'GAME NOT OVER'):
-                logic.add_new_2(self.mat)
-            else:
-                self.game_over()
-        else:
-            print("Invalid move, no tiles moved. Try again.")
+        status = logic.get_current_state(self.mat, flag)
+        if status == 'INVALID MOVE':
+            print(status)
+        elif status == 'WE WON':
+            print("Congratulations, you WON!")
+        elif status == 'GAME OVER :(':
+            print("Game Over. You LOST!")
+        elif status == 'GAME NOT OVER':
+            logic.add_new_2(self.mat)
 
         ##################### 2048 game window end ###################
     def draw_grid(self):
@@ -761,15 +759,6 @@ class GUI:
                         font=("Bahnschrift 24 bold"), 
                         fill="#FFFFFF"
                     )        
-
-    def game_over(self):
-        self.game_over_label = Label(self.mid_frame,
-                                text='GAME OVER!',
-                                bg = "#FFFFFF", 
-                                fg = "#000000",
-                                font = "Bahnschrift 20 bold")
-        self.game_over_label.place(relx=0.5,rely=0.5)
-        self.game_over_label.pack()
 
     def calc_total(self,g_status,total_score):
         current_score = 0
