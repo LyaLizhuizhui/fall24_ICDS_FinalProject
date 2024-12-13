@@ -196,7 +196,6 @@ class GUI:
                                   width = 20,
                                   bg = "#e8bb23",
                                   fg = "#FFFFFF",
-                                  # command = lambda : self.sendButton("game")
                                   command = self.game
                                   )
         
@@ -370,10 +369,7 @@ class GUI:
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                #command = lambda : self.sendButton("c "+self.entry.get()))
                                 command = self.connect_with)
-                                #command = lambda : [self.sendButton("c "+self.entry.get()),
-                                #    self.connect_window.destroy])
         self.quit_button = Button(self.bottom_frame,
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
@@ -427,10 +423,7 @@ class GUI:
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                #command = lambda : self.sendButton("? "+self.entry.get()))
                                 command = self.search_history)
-                                #command = lambda : [self.sendButton("? "+self.entry.get()),
-                                #    self.history_window.destroy])
         self.quit_button = Button(self.bottom_frame,
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
@@ -484,10 +477,8 @@ class GUI:
                                 width = 10,
                                 bg = "#196ba0",
                                 fg = "#FFFFFF",
-                                #command = lambda : self.sendButton("p"+self.entry.get()))
                                 command = self.get_sonnet)
-                                #command = lambda : [self.sendButton("p"+self.entry.get()),
-                                #    self.sonnet_window.destroy])
+
         self.quit_button = Button(self.bottom_frame,
                                 text='Quit',
                                 font = "Bahnschrift 12 bold", 
@@ -582,9 +573,7 @@ class GUI:
                                 fg = "#000000",
                                 font = "Bahnschrift 15"
                                 )
-        #self.display_score_label.place(relx=0.5,rely=0.75)
         self.display_score_label.pack(side='top')
-        #self.display_score_label.grid(row=0, column=0, sticky='w', padx=10)
 
         # Description / rule
         self.rule_label = Label(self.left_frame,
@@ -643,11 +632,6 @@ class GUI:
         self.right_button.place(relx = 0.7, 
                        rely = 0.3)
 
-        # self.up_button.pack(side = "top",padx=1,pady=2)
-        # self.down_button.pack(side = "bottom",padx=1,pady=2)
-        # self.left_button.pack(side = "left",padx=3,pady=2)
-        # self.right_button.pack(side = "right",padx=3,pady=2)
-
     def check_status(self): 
         global flag, g_status, total_score
         g_status = logic.get_current_state(self.mat, flag)
@@ -675,7 +659,6 @@ class GUI:
         # call the move_up function
         self.mat, flag = logic.move_up(self.mat)
         self.assign_mat()
-        # get the current state and print it
         # Get the game status, including invalid moves
         self.check_status()
         
@@ -700,7 +683,6 @@ class GUI:
         self.assign_mat()
         self.check_status()
 
-        ##################### 2048 game window end ###################
     def draw_grid(self):
         # Vertical lines
         for i in range(5):
@@ -762,14 +744,6 @@ class GUI:
                 for col in range(4):
                     total_score += self.mat[row][col]
 
-        # # Send score to server
-        # try:
-        #     msg = json.dumps({"action": "score_update", "score": total_score})
-        #     msg_size = str(len(msg))
-        #     self.socket.send(msg_size.encode() + msg.encode())
-        # except Exception as e:
-        #     print("error")  
-
         # Display status
         self.display_status_label.destroy()
         self.display_score_label.destroy()
@@ -789,6 +763,7 @@ class GUI:
                                 font = "Bahnschrift 15"
                                 )
         self.display_score_label.pack(side='top')
+    ######################## 2048 game window end ###############################
 
     # function to basically start the thread for sending messages
     def sendButton(self, msg):
@@ -804,14 +779,6 @@ class GUI:
             peer_msg = []
             if self.socket in read:
                 peer_msg = self.recv()
-            # if peer_msg:
-            #     message = json.loads(peer_msg)
-            #     if message["action"] == "new_high_score":
-            #     # Update the displayed high score
-            #         new_high_score = message["score"]
-            #         self.textCons.config(state=NORMAL)
-            #         self.textCons.insert(END, f"New high score: {new_high_score}\n")
-            #         self.textCons.config(state=DISABLED)
 
             if len(self.my_msg) > 0 or len(peer_msg) > 0:
                 # print(self.system_msg)

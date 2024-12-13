@@ -28,7 +28,7 @@ class Server:
         # self.sonnet_f = open('AllSonnets.txt.idx', 'rb')
         # self.sonnet = pkl.load(self.sonnet_f)
         # self.sonnet_f.close()
-        # self.sonnet = indexer_good.PIndex("AllSonnets.txt") # local
+        # self.sonnet = indexer_good.PIndex("AllSonnets.txt")
         self.sonnet = indexer_good.PIndex("C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
         # self.sonnet = indexer_good.PIndex("E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/GUI/AllSonnets.txt")
         self.highest_score = 0
@@ -185,7 +185,6 @@ class Server:
 #==============================================================================
 #                 the "from" guy really, really has had enough
 #==============================================================================
-
         else:
             #client died unexpectedly
             self.logout(from_sock)
