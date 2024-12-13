@@ -12,8 +12,9 @@ from chat_utils import *
 import json
 import logic
 
-g_statue = "Please start!"
+g_status = "Please start!"
 total_score = 0
+flag = True
 
 # GUI class for the chat
 class GUI:
@@ -509,12 +510,11 @@ class GUI:
 
     ##################### implementation: 2048 game window ###################
     def game(self):   
-        global g_status, total_score
+        global g_status, total_score, flag
         # self.g_status = 'Please Start! :)' 
         # self.total_score = 0
 
         self.mat = logic.start_game()
-        self.flag = True
         
         self.game_window = Tk()
         self.game_window.title("2048 GAME")
@@ -603,7 +603,7 @@ class GUI:
                             width = 2,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            command = lambda: self.up(self.flag)
+                            command = lambda: self.up()
                         )
 
         self.up_button.place(relx = 0.5, 
@@ -616,7 +616,7 @@ class GUI:
                             width = 2,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            command = lambda: self.down(self.flag)
+                            command = lambda: self.down()
                         )
         self.down_button.place(relx = 0.5, 
                        rely = 0.6)
@@ -628,7 +628,7 @@ class GUI:
                             width = 2,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            command= lambda: self.left(self.flag)
+                            command= lambda: self.left()
                         )
         self.left_button.place(relx = 0.3, 
                        rely = 0.3)
@@ -639,7 +639,7 @@ class GUI:
                             width = 2,
                             bg = "#196ba0",
                             fg = "#FFFFFF",
-                            command = lambda: self.right(self.flag)
+                            command = lambda: self.right()
                         )
         self.right_button.place(relx = 0.7, 
                        rely = 0.3)
@@ -649,62 +649,51 @@ class GUI:
         # self.left_button.pack(side = "left",padx=3,pady=2)
         # self.right_button.pack(side = "right",padx=3,pady=2)
 
-    def up(self, flag):
+    def check_status(self): 
+        global flag
+        global g_status
+        g_status = logic.get_current_state(self.mat, flag)
+        self.calc_total()
+        # Handle the different statuses
+        if g_status == 'GAME OVER :(':
+            print("Game Over. You LOST!")
+        elif g_status == 'WE WON':
+            print("Congratulations, you WON!")
+        elif g_status == 'INVALID MOVE':
+            print(g_status)
+        elif g_status == 'GAME NOT OVER':
+            print(g_status)
+            logic.add_new_2(self.mat)
+
+    def up(self):
+        global flag
         # call the move_up function
-        self.mat, self.flag = logic.move_up(self.mat)
+        self.mat, flag = logic.move_up(self.mat)
         self.assign_mat()
         # get the current state and print it
         # Get the game status, including invalid moves
-        status = logic.get_current_state(self.mat, flag)
-
-        # Handle the different statuses
-        if status == 'INVALID MOVE':
-            print(status)
-        elif status == 'WE WON':
-            print("Congratulations, you WON!")
-        elif status == 'GAME OVER :(':
-            print("Game Over. You LOST!")
-        elif status == 'GAME NOT OVER':
-            logic.add_new_2(self.mat)
-
-    def down(self, flag):
-        self.mat, self.flag = logic.move_down(self.mat)
+        self.check_status()
+        
+    def down(self):
+        global flag
+        # call the move_up function
+        self.mat, flag = logic.move_down(self.mat)
         self.assign_mat()
-        status = logic.get_current_state(self.mat, flag)
-        if status == 'INVALID MOVE':
-            print(status)
-        elif status == 'WE WON':
-            print("Congratulations, you WON!")
-        elif status == 'GAME OVER :(':
-            print("Game Over. You LOST!")
-        elif status == 'GAME NOT OVER':
-            logic.add_new_2(self.mat)
+        self.check_status()
 
-    def left(self, flag):
-        self.mat, self.flag = logic.move_left(self.mat)
+    def left(self):
+        global flag
+        # call the move_up function
+        self.mat, flag = logic.move_left(self.mat)
         self.assign_mat()
-        status = logic.get_current_state(self.mat, flag)
-        if status == 'INVALID MOVE':
-            print(status)
-        elif status == 'WE WON':
-            print("Congratulations, you WON!")
-        elif status == 'GAME OVER :(':
-            print("Game Over. You LOST!")
-        elif status == 'GAME NOT OVER':
-            logic.add_new_2(self.mat)
+        self.check_status()
 
-    def right(self, flag):
-        self.mat, self.flag = logic.move_right(self.mat)
+    def right(self):
+        global flag
+        # call the move_up function
+        self.mat, flag = logic.move_right(self.mat)
         self.assign_mat()
-        status = logic.get_current_state(self.mat, flag)
-        if status == 'INVALID MOVE':
-            print(status)
-        elif status == 'WE WON':
-            print("Congratulations, you WON!")
-        elif status == 'GAME OVER :(':
-            print("Game Over. You LOST!")
-        elif status == 'GAME NOT OVER':
-            logic.add_new_2(self.mat)
+        self.check_status()
 
         ##################### 2048 game window end ###################
     def draw_grid(self):
@@ -761,22 +750,23 @@ class GUI:
                         fill="#FFFFFF"
                     )        
 
-    def calc_total(self,g_status,total_score):
-        current_score = 0
-        for row in range(4):
-            for col in range(4):
-                current_score += self.mat[row][col]
-        total_score = current_score
+    def calc_total(self):
+        global g_status,total_score,flag
+        if flag:
+            for row in range(4):
+                for col in range(4):
+                    total_score += self.mat[row][col]
 
         self.display_status_label.destroy()
         self.display_score_label.destroy()
 
         self.display_status_label = Label(self.top_frame,
-                                text=g_status,
+                                text= g_status,
                                 bg = "#FFFFFF", 
                                 fg = "#000000",
                                 font = "Bahnschrift 16"
                                 )
+
         self.display_status_label.pack(pady=14)
         self.display_score_label = Label(self.left_frame,
                                 text='Your score is: '+ str(total_score),
