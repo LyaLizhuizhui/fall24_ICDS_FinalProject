@@ -187,7 +187,7 @@ def move_up(mat):
 # if we move / swipe down
 def move_down(mat):
     new_mat = transpose(mat)
-    new_mat, changed = move_left(new_mat)
+    new_mat, changed = move_right(new_mat)
     new_mat = transpose(new_mat)
     return new_mat, changed
 

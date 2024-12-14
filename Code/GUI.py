@@ -329,7 +329,7 @@ class GUI:
         
     def contacts(self):
         self.sendButton("who")
-        logged_in = self.system_msg[-101:-10]
+        logged_in = self.system_msg[-137:-10]
         messagebox.showinfo('Contacts', logged_in)
     
     #######################end implementation#######################
@@ -635,15 +635,9 @@ class GUI:
         self.calc_total()
         # Handle the different statuses
         if g_status == 'GAME OVER :(':
-            # print("Game Over. You LOST!")
             self.sendButton("total"+ str(total_score))
             total_score = 0
-        # elif g_status == 'WE WON':
-        #     print("Congratulations, you WON!")
-        # elif g_status == 'INVALID MOVE':
-        #     print(g_status)
         elif g_status == 'GAME NOT OVER':
-            # print(g_status)
             logic.add_new_2(self.mat)
 
     def quitgame(self):

@@ -1,4 +1,4 @@
-# 2048.py
+# game2048.py
 
 # importing the logic.py file
 # where we have written all the

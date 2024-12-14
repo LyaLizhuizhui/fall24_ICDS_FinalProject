@@ -29,8 +29,7 @@ class Roman2num:
         self.outf.close()
         
 if __name__ == "__main__":
-    # r = Roman2num('C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/Code/roman.txt')
-    r = Roman2num('E:/NYUSH/24Fall/ICDS/Code/fall24_ICDS_FinalProject/Code/roman.txt')
+    r = Roman2num('roman.txt')
     r.build_table()
     
     for i in range(10):

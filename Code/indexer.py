@@ -79,8 +79,7 @@ class PIndex(Index):
         return poem
     
 if __name__ == "__main__":
-    sonnets = PIndex('C:/Users/34189/Desktop/上纽NYUSH/ICDS/fall24_ICDS_FinalProject/GUI/AllSonnets.txt')
-    # sonnets = PIndex("AllSonnets.txt")
+    sonnets = PIndex("AllSonnets.txt")
     p3 = sonnets.get_poem(3)
     print(p3)
     s_love = sonnets.search("love")
