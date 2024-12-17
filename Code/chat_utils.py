@@ -6,7 +6,6 @@ import time
 CHAT_IP = socket.gethostbyname(socket.gethostname())
 
 CHAT_PORT = 1112
-GAME_SERVER = 3333
 SERVER = (CHAT_IP, CHAT_PORT)
 
 menu = "\n\nHello :)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
@@ -15,7 +14,6 @@ S_OFFLINE   = 0
 S_CONNECTED = 1
 S_LOGGEDIN  = 2
 S_CHATTING  = 3
-S_GAMING = 4
 
 SIZE_SPEC = 5
 
